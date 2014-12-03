@@ -1,0 +1,6 @@
+<!--footer-->
+<footer>
+    
+    <span><a href="../pageadmin/quisommesnous.php">Qui sommes-nous?</a> | <a href="../pageadmin/contact.php">Contact</a> | <a href="../pageadmin/cgu.php">CGU</a> | <a href="../pageadmin/aide.php">Aide</a> | <a href="../pageadmin/forum.php">Forum</a> | © Copyright 2013 SAS <strong>G</strong>chan<strong>G</strong></span>
+    
+</footer>

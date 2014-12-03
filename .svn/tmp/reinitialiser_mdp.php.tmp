@@ -1,0 +1,81 @@
+<?php 
+	session_start(); 
+        $page = 'reinitialiser_mdp';
+?> 
+<!DOCTYPE HTML>
+<html>
+	<head>
+                <meta charset="utf-8" />
+                <link rel="stylesheet" href="stylepages.css" />
+                <link rel="stylesheet" href="../structure/stylestructure.css" />
+                <link rel="icon" type="images/png" href="../../images/favicone.png">
+                <title>GchanG</title>
+	</head>
+        
+        
+<body>
+
+<div id="page">
+    
+    <?php include ('../structure/header.php');?>
+    
+    <?php include ('../structure/nav.php');?>
+    
+    <?php include ('../structure/aside.php');?>
+    
+    <!--corps-->
+    <article>
+    <?php 
+        //verification
+        if(empty($_SESSION['6_letters_code'] ) ||
+                strcasecmp($_SESSION['6_letters_code'], $_POST['6_letters_code']) != 0)
+        { 
+                $msg="Code erreur!";
+        }else{
+                $msg="Code bon.";
+        //todo: verification success
+      
+        $email = $_POST['email'];
+        include '../structure/connexion_bdd.php';
+        $q = "SELECT Pwd FROM client WHERE AdresseMail='$email'";
+        if($statement = $bdd->query($q)) 
+        {
+            $donnees = $statement->fetch();
+
+<<<<<<< .mine
+            echo "votre mots de passe est ".$donnees['Pwd'];
+=======
+            $emailexist = 0;
+            include '../structure/connexion_bdd.php';
+            $reponse = $bdd->query('SELECT Pseudo,AdresseMail,Pwd FROM client');
+            $pseudocorrect=0;
+            
+            while ($donnees = $reponse->fetch()){
+                if($donnees['AdresseMail']==$email){
+                    echo 'mot de passse: ';
+                    echo $donnees['Pwd'];
+                    $pseudocorrect=1;
+                }     
+            }
+            if($pseudocorrect==0){
+                echo "Votre adresse n'a pas de corespondance";
+            }
+            $reponse->closeCursor(); 
+        
+>>>>>>> .r94
+        }
+        else 
+            echo 'AdresseMail n\'existe pas';
+
+    }
+    /* //test
+        echo "<p>Session code:</p>";
+        $str = $_SESSION['6_letters_code'];
+        echo "<p>$str</p>";
+        echo "<p>your code:</p>";
+        $str = $_POST['6_letters_code'];
+        echo "<p>$str</p>";
+        echo "<p>$msg</p>";*/
+    ?>   
+       
+</article> 

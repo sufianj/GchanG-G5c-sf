@@ -1,0 +1,54 @@
+*{
+    font-family: Times New Roman;
+    font-size: 16px;
+}
+#page{
+    min-width: 800px;
+    width: 90%;
+    margin: auto;
+    background-color: lightblue;
+    border-radius: 10px;
+}
+
+/*accueil*/
+#recherche_accueil{
+    margin-left: 25%;
+    margin-top: 80px;
+}
+#barre_recherche_accueil{
+    width: 40%;
+}
+#choix_accueil{
+    margin-left: 25%;
+}
+.check_accueil{
+    margin-left: 10%;
+}
+
+/*corp de page*/
+
+article{
+    margin-left: 10px;
+    margin-top: 2%;
+    min-width: 610px;
+    width: 70%;
+    display: inline-block;
+    margin-right: -0.25em;
+    vertical-align: top;
+
+}
+
+#inscription{
+    margin: 30px;
+    margin-left: 20%;
+}
+#mdp_oublie{
+    margin: 30px;
+    margin-left: 15%;   
+}
+
+/*mot de passe oublié*/
+.taille_input{
+    width:200px;    
+}
+

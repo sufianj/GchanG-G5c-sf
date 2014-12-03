@@ -1,0 +1,56 @@
+petit guide pour les cles etrangeres
+
+- La clé étrangère, c'est quoi?
+		http://fr.wikipedia.org/wiki/Cl%C3%A9_%C3%A9trang%C3%A8re 
+		Une clé étrangère, dans une base de données relationnelle, est une contrainte qui garantit l'intégrité référentielle entre deux tables.
+	Une clé étrangère identifie une colonne ou un ensemble de colonnes d'une table comme référençant une colonne ou un ensemble de colonnes d'une autre table (la table référencée). Les colonnes de la table référencée doivent faire partie d'une contrainte de clé primaire ou d'une contrainte d'unicité. La contrainte de clé étrangère garantit que les valeurs de chaque ligne de la table référençant existent dans la table référencée : ainsi une ligne de la table référençant ne peut pas contenir un ensemble de valeurs qui n'existe pas dans la table référencée.
+	Une contrainte de clé étrangère permet ainsi d'établir des liens entre plusieurs tables : il s'agit d'un des principes fondamentaux des bases de données relationnelles.
+	 	http://dev.mysql.com/doc/refman/5.0/fr/ansi-diff-foreign-keys.html 
+		http://www.w3schools.com/sql/sql_foreignkey.asp	
+- Les contraintes 
+	-- CASCADE
+	-- RESTRICT
+	-- NO ACTION
+	-- SET NULL
+
+- Gestion des clés étrangères avec phpmyadmin
+	1. codes sql
+		-----------------------------------------------------------------------------------
+		-- Structure de la table `objet`
+		--
+		CREATE TABLE IF NOT EXISTS `objet` (
+		  `idObjet` int(8) NOT NULL AUTO_INCREMENT,
+		  `TitreObjet` varchar(25) COLLATE latin1_bin DEFAULT NULL,
+		  `idUtilisateur` int(8) DEFAULT NULL,
+		  `TypeOperation` varchar(10) COLLATE latin1_bin DEFAULT NULL,
+		  `DescriptionObjet` longtext COLLATE latin1_bin NOT NULL,
+		  `idCategorie` int(8) NOT NULL,
+		  `idGrosseCat` int(11) NOT NULL,
+		  `PseudoProprio` varchar(15) COLLATE latin1_bin NOT NULL,
+		  PRIMARY KEY (`idObjet`), 
+		  KEY `idUtilisateur` (`idUtilisateur`), 
+		  KEY `idCategorie` (`idCategorie`),
+		  KEY `idGrosseCat` (`idGrosseCat`)
+		) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COLLATE=latin1_bin AUTO_INCREMENT=27 ;
+
+		-- Contraintes pour la table `objet`
+		--
+		ALTER TABLE `objet`
+		  ADD CONSTRAINT `objet_ibfk_4` FOREIGN KEY (`idUtilisateur`) REFERENCES `client` (`idClient`) ON DELETE CASCADE ON UPDATE CASCADE,
+		  ADD CONSTRAINT `objet_ibfk_2` FOREIGN KEY (`idCategorie`) REFERENCES `subcategorie` (`idSubCategorie`) ON DELETE CASCADE ON UPDATE CASCADE,
+		  ADD CONSTRAINT `objet_ibfk_3` FOREIGN KEY (`idGrosseCat`) REFERENCES `categorie` (`idCategorie`) ON DELETE CASCADE ON UPDATE CASCADE;
+		--------------------------------------------------------------------------------------
+
+	2. utilisant l'interface graphique de phpmyadmin
+		http://www.up2.fr/M1/td/foreignkey.html  XD
+
+	3. utilisant page << concepteur >> de phpmyadmin
+		localhost -> gchangvide -> concepteur -> Il suffit de glisser-déposer! XD
+
+- Attention:
+	1. Les colonnes de la table référencée doivent faire partie d'une contrainte de clé primaire ou d'une contrainte d'unicité
+	2. faut utiliser le moteur InnoDB pour obtenir cette fonctionnalité
+	3. Les colonnes correspondantes de la contrainte dans la table et la table de référence doivent avoir le même type, pour éviter les conversions lors des comparaisons!! (J'ai déjà modifié la taille de idClient et idObjet)
+	4. assurez que toutes les données sont correctes avant de définir les clés étrangères
+		ex: s'il y a (10, 'Four Mico-ondes wirpool', 5, 'Location', 'Four mico-onde de 60V, efficace pour tout type de nourriture', 12, 7, 'Chantal') dans table 'objet', mais 'Chantal' a déjà été supprimé dans table 'client', on ne peut pas définir idUtilisateur comme clé étrangère référençant idClient.
+

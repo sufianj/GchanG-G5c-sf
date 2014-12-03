@@ -1,0 +1,160 @@
+<?php
+
+if(isset($_POST['pseudo']) && isset($_POST['mdp'])){ 
+    include '../structure/connexion_bdd.php';
+    $reponse = $bdd->query("SELECT idClient,Pseudo,NomUtilisateur,PrenomUtilisateur,Pwd,AdresseMail FROM client WHERE Pseudo='$_POST[pseudo]'");
+    $donnees = $reponse->fetch();
+    if($_POST['mdp']== $donnees['Pwd']){
+        $_SESSION['id'] = $donnees['idClient'];
+        $_SESSION['pseudo'] = $donnees['Pseudo'];
+        $_SESSION['nom'] = $donnees['NomUtilisateur'];
+        $_SESSION['prenom'] = $donnees['PrenomUtilisateur'];
+	$_SESSION['mail'] = $donnees['AdresseMail'];
+    }
+}
+
+if(isset($_SESSION['id'])){
+    if($_SESSION['id']=="1"){echo $_SESSION['id'];
+        print("<script type=\"text/javascript\">setTimeout('location=(\"../pageadmin/accueil.php\")' ,0);</script>");
+    }
+}
+if(isset($_SESSION['nom']) && isset($_SESSION['prenom'])){
+    
+    echo $_SESSION['prenom'];
+    echo ' ';
+    echo $_SESSION['nom'];
+    echo '<br />';
+    echo '<a href="compte.php">Mon Compte</a>';
+    echo " / ";
+    echo '<a href="../structure/deconnexion.php">Déconnexion</a>';
+
+    
+    
+}else{
+echo '
+<form method="post">
+    <label for="pseudo">Votre pseudo</label> : </br>
+    <input type="text" name="pseudo"/></br>
+    <label for="mdp">Votre mot de passe</label> : </br>
+    <input type="password" name="mdp"/>
+    <input type="submit" class="go" /></br>
+    <a href="../pages/inscription.php">Inscription</a> / <a href="../pages/motdepasseoublie.php">Mot de passe oublié</a>
+
+</form>
+        ';
+}
+?>
+
+<!--
+<script src="http://connect.facebook.net/fr_FR/all.js"></script>
+<script type="text/javascript">
+    FB.init({
+        appId  : '266300906851634',
+        status : true, // verifie le statut de la connexion
+        cookie : true, // active les cookies pour que le serveur puisse accéder à la session
+        xfbml  : true  // active le XFBML (HTML de Facebook)
+    });
+</script>
+
+
+<div class="box">
+    <div id="social_networks">
+        <div id="facebook_button_box">
+            <fb:login-button width="450" perms="email,user_birthday,read_stream"></fb:login-button>
+        </div>
+    </div>
+    <div id="social_networks_profiles">
+        <div id="facebook_profile" style="display:none;">
+            <div id="facebook_profile_image" style="width:50px;height:50px;margin-left:20px;float:left;">
+		
+            </div>
+            <div id="facebook_profile_text" style="height:50px;margin-top:-3px;margin-left:5px;float:left">
+		
+            </div>
+            <div class="clear"></div>
+            <ul id="facebook_user_data">
+		
+            </ul>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+$(document).ready(function() {
+
+    FB.Event.subscribe('auth.login', function(response) {
+
+        FB.api('/me', function(response) { 
+
+            var url = 'http://graph.facebook.com/' + response.id + '/picture';
+
+            $('#facebook_profile_image').html('<img src="' + url + '" alt="#" />');
+            $('#facebook_profile_text').html('<p><a href="' + response.link + '"><strong>' + response.name + '</strong></a><br /><a href="#" id="facebook_logout">Deconnexion</a>');
+
+            var user_data = '<ul><li>Votre date de naissance : ' + response.birthday + '</li><li>Votre adresse email : ' + response.email + '</li>';
+            $('#facebook_user_data').html(user_data);
+
+        });
+
+        $('#facebook_button_box').hide();
+        $('#facebook_profile').show();
+
+    });
+
+    FB.getLoginStatus(function(response) {
+
+        if (response.session) {
+
+            FB.api('/me', function(response) { 
+
+                var url = 'http://graph.facebook.com/' + response.id + '/picture';
+
+                $('#facebook_profile_image').html('<img src="' + url + '" alt="#" />');
+                $('#facebook_profile_text').html('<p><a href="' + response.link + '"><strong>' + response.name + '</strong></a><br /><a href="#" id="facebook_logout">Deconnexion</a>');
+
+                var user_data = '<li>Votre date de naissance : ' + response.birthday + '</li><li>Votre adresse email : ' + response.email + '</li><li>Votre bio : ' + response.bio + '</li>';
+                $('#facebook_user_data').html(user_data);
+
+                FB.api('/me/posts', function(response) {
+
+                    var messages = '<li>Vos 3 derniers statuts : <ul>';
+
+                    $.each(response.data, function(key, value) {
+
+                        messages += '<li>' + value.message + '</li>';                           
+                        return (key != 2);
+
+                    }); 
+
+                    messages += '</ul></li>';
+
+                    $('#facebook_user_data').append(messages);
+
+                });
+
+            });
+
+            $('#facebook_button_box').hide();
+            $('#facebook_profile').show();
+
+        }
+    });
+
+    $('#facebook_logout').live('click', function() {
+
+        FB.logout(function(response) {
+
+            $('#facebook_button_box').show();
+            $('#facebook_profile').hide();
+
+        });
+
+        return false;
+
+    });         
+});
+</script>
+
+-->

@@ -1,0 +1,161 @@
+/*en tete*/
+header{
+    width: 100%;
+    text-align: center;
+}
+#logo{
+    display: inline-block;
+    width: 70%;
+}
+#image_logo{
+    width: 95%;   
+}
+#boite_conexion{
+    display: inline-block;
+    width: 29%;
+    vertical-align: top;
+    padding-top: 0.8%;
+    
+}
+.go
+{
+    background-repeat:no-repeat;
+    background-position: top;
+    height: 20px;
+    cursor: pointer;
+    font-size:0px;
+    width: 30px;
+    border: none;
+    background-image:url(../../images/demigoheader.png);
+}
+
+
+
+
+/*menu en tete*/
+nav{
+    width: 100%;
+}
+#nav_gauche{
+    display: inline-block;
+    margin: 5px;
+    margin-left: 18px;
+    width: 34%;
+    height:110px;
+    background-color: #3366ff;
+    padding-left: 0.5%;
+    border-radius: 5px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+#nav_gauche h1{
+    margin-left: 60px;
+    margin-top: 30px;
+    font-size: 20px;
+}
+#nav_droite{
+    display: inline-block;
+    height: 110px;
+    vertical-align: top;
+    margin-top: 5px;
+    width: 61%; 
+    background-color: #3366ff;
+    padding-left: 0.5%;
+    border-radius: 5px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+nav h1{
+    margin: 2px;
+}
+nav h2{
+    margin: 1px;            
+}
+nav .barre_recherche{
+    width: 58%;
+}
+nav .check{
+    margin-left: 15%;
+}
+nav .go{
+    background-image:url(../../images/demigonav.png);
+}
+
+/*menu lateral*/
+aside{
+    min-width: 160px;
+    width: 23%;
+    display: inline-block;
+    margin-right: -0.25em;
+    margin-bottom: 5%;
+
+}
+.bouton{
+    background-color: silver;
+    margin-top: 20px;
+    text-align: center; 
+    border-radius: 10px;
+    padding-right: 15%;
+    padding-left: 15%;
+    padding-top: 10%;
+    padding-bottom: 10%;
+
+
+}
+.bouton:hover{
+    background-color: darkgrey
+}
+.boite_bouton{
+    width: 100px;
+    display: inline-block;
+}
+aside a{
+    color: black;
+    text-decoration: none;
+}
+aside ul{
+    list-style-type: none; 
+    margin-left:0; 
+    padding-left:0;
+
+    
+}
+aside li{
+    margin-top: 25%;
+    margin-left: 10%;
+}
+
+
+
+/*pied de page*/
+footer{
+    width: 99.65%;
+    padding: 2px;
+    text-align: center;
+    border-top: solid black 1px;
+    margin-top: 30px;
+}
+footer a{
+    color: black;
+    text-decoration: none;
+}
+
+
+/*carroussel*/
+#tableau_categorie_accueil{
+    margin-top: 80px;
+    background-color: #6699ff;
+    width: 100%;
+}
+#tableau_caroussel_bouton{
+    width: 20%;
+    padding: 0.5%;    
+}
+.tableau_caroussel{
+    width: 20%;   
+}
+
+
+/*forum*/
+

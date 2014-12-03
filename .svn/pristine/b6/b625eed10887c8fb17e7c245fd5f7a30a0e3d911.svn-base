@@ -1,0 +1,400 @@
+<?php 
+    session_start();
+    $page='objet';
+    $idobjet=$_GET['id'];
+    if(isset($_SESSION['id'])){
+	$iduser=$_SESSION['id'];
+    
+    
+    include '../structure/connexion_bdd.php';
+    $bdd->exec("DELETE FROM notifoperation  WHERE idObjet='$idobjet' AND idUser='$iduser'");
+    }
+    
+?>
+<!DOCTYPE HTML>
+<html>
+	<head>
+                <meta charset="utf-8" />
+                <link rel="stylesheet" href="stylepages.css" />
+                <link rel="stylesheet" href="etoile.css" />
+                <link rel="stylesheet" href="../structure/stylestructure.css" /> 
+                <link rel="icon" type="images/png" href="../../images/favicone.png">
+                <title>GchanG</title>
+                <script type="text/javascript" src="../structure/ckeditor/ckeditor.js"></script> 
+	</head>
+        
+        
+<body>
+    
+<div id="page">
+    <?php
+             if (isset($_POST['cmt']) && isset($_SESSION['id']))
+             {
+                 include '../structure/connexion_bdd.php';;
+                     $idObjet = $_GET['id'];
+                     $idCmteur = $_SESSION['id'];
+                     $cmt = $_POST['cmt'];
+                     $note = $_POST['note'];
+                     //include '../structure/connexion_bdd.php';
+                     $bdd->exec("INSERT INTO commentobjet(Commentaire,idUser,"
+                             ."idObjet,note)"
+                             . " VALUES('$cmt', '$idCmteur','$idObjet','$note')");
+                
+             }
+        ?>
+    <?php  
+    if(isset($_POST['echange'])){
+	include '../structure/connexion_bdd.php';
+	$iduser=$_POST['idclient'];
+	$idobjet=$_POST['idobjet'];
+	$message=$_POST['message'];
+	$message = addslashes($message);
+	$pseudo=$_SESSION['pseudo'];
+	$bdd->exec("INSERT INTO messageoperation(idUser,idObjet,Message,Pseudo) VALUES('$iduser','$idobjet','$message','$pseudo')");
+	
+	$reponse = $bdd->query("SELECT client.idClient,client.Pseudo,objet.idObjet,objet.PseudoProprio FROM client,objet WHERE objet.idObjet=$idobjet AND objet.PseudoProprio=client.Pseudo");
+	$don=$reponse->fetch();
+	$idpseuproprio=$don['idClient'];
+	
+	$bdd->exec("INSERT INTO notifoperation(idUser,idObjet) VALUES('$idpseuproprio','$idobjet')");
+
+	
+	
+    }   
+    
+    if(isset($_POST['reponse'])){
+	include '../structure/connexion_bdd.php';
+	$iduser=$_POST['idclient'];
+	$idobjet=$_POST['idobjet'];
+	$message=$_POST['message'];
+	$message = addslashes($message);
+	$pseudo=$_SESSION['pseudo'];
+	$bdd->exec("INSERT INTO messageoperation(idUser,idObjet,Message,Pseudo) VALUES('$iduser','$idobjet','$message','$pseudo')");
+	$bdd->exec("INSERT INTO notifoperation(idUser,idObjet) VALUES('$iduser','$idobjet')");
+
+	
+	
+    }   
+     if(isset($_POST['supechange'])){
+	include '../structure/connexion_bdd.php';
+	$iduser=$_POST['idclient'];
+	$idobjet=$_POST['idobjet'];
+     	$bdd->exec("DELETE FROM messageoperation WHERE idObjet = '$idobjet' && idUser = '$iduser'");
+     }
+    
+    
+    $transac=0;
+    if(isset($_POST['suppcmt']))
+    {
+        $suppcmt = $_POST['suppcmt'];
+        include '../structure/connexion_bdd.php';
+        $bdd->exec("DELETE FROM commentobjet WHERE idCommentObjet = '$suppcmt'");
+    }
+
+    
+    ?>
+    
+    
+    <?php include ('../structure/header.php');?>
+    
+    <?php include ('../structure/nav.php');?>
+    
+    <?php include ('../structure/aside.php');?>
+    
+    <!--corps-->
+    <article>
+
+
+        <?php
+        include '../structure/connexion_bdd.php';
+
+        echo '<br />';
+        $resultats = $bdd->query("SELECT * FROM objet WHERE idObjet='$_GET[id]'");
+        while ($donnees = $resultats->fetch()){
+     
+		echo '<a href="../pages/objet.php?id=';
+		echo $donnees['idObjet'];
+		echo "\">";
+		echo '<table class="resultatrech"><tr><td></td><td><h1 style ="font-size:20px">';
+		echo $donnees['TitreObjet'];
+                $photoobjet = $donnees['idObjet'].'.jpg';
+                echo '</h1></td></tr><tr><td class="image">';
+                if (file_exists("../../images/objets/$photoobjet"))
+		{
+                    echo '<img src="../../images/objets/';
+                    echo $donnees['idObjet'];
+                    echo '.jpg"  alt="Objet" width="100" height="100">';
+                
+                }
+                else{
+                    echo '<img src="../../images/objets/none.jpg" width="100" height="100">';
+                }
+                echo '</td><td style ="font-size:15px">Description : ';
+                echo $donnees['DescriptionObjet'];
+		echo '<br /> Type d\'opération : ';
+		echo $donnees['TypeOperation'];
+		echo '<br /> Propriétaire : ';
+		echo "<a href=../pages/utilisateurs.php?utilisateur='$donnees[PseudoProprio]'>";
+		echo $donnees['PseudoProprio'];
+		echo '</a>';
+                
+                   //moyenne de notes
+                include_once '../structure/fonction_notation.php';
+                    $idObjet=$_GET['id'];
+                    $reponse3 = $bdd->query("SELECT AVG(note) FROM commentobjet WHERE idObjet='$idObjet';");
+                        if($donnees3 = $reponse3->fetch())
+                        {
+                            echo '<br />'."moyenne de notes:";
+                            afficher_les_etoiles($donnees3['AVG(note)']);
+                        }
+                        else 
+                        {
+                            echo '<br />'."moyenne de notes:";
+                            afficher_les_etoiles(0);
+                        }
+		echo '</td></tr></table>';
+		echo '</a>';
+		echo '<br /><br />';
+		$idproprietaire=$donnees['idUtilisateur'];
+		if(isset($_SESSION['pseudo']) && $donnees['PseudoProprio']==$_SESSION['pseudo']){
+		    $transac=1;
+		    $pseudoproprio=$donnees['PseudoProprio'];
+		    
+		    
+		}
+        }
+	
+	    
+
+        ?>
+	
+	
+	<?php if(isset($_SESSION['id']) && $transac==0){ ?>
+	
+	<form method="post" action="objet.php?id=<?php echo $_GET['id']; ?>">
+	    <input type="hidden" name="idobjet" value="<?php echo $_GET['id']; ?>">
+	    <input type="hidden" name="idclient" value="<?php echo $_SESSION['id']; ?>">
+	    <textarea rows="5" cols="60" name="message" required></textarea>
+	    <br>
+	    <input type="submit" name="echange" value="Répondre à la proposition" class="petit_bouton">
+	    
+	</form>
+	<?php }	    if(!isset($_SESSION['id'])){ 
+
+	    if(!isset($_SESSION['id'])){ 
+	    echo'<h1>Veuillez vous créer un compte pour pouvoir postuler pour un objet</h1>';
+	    echo 'En cliquant ici :  <a class="lien" href="../pages/inscription.php">Inscription</a>';
+	    }
+	}
+	    ?>
+	
+	
+	
+	<?php
+	
+	if(isset($_SESSION['id']) && $_SESSION['id'] != $idproprietaire){
+	    //L'utilisateur est connecté mais pas proprietaire de l'objet
+	    $idclient=$_SESSION['id'];
+	    $idobjet=$_GET['id'];
+	    include '../structure/connexion_bdd.php';
+	    $reponse = $bdd->query("SELECT * FROM messageoperation WHERE(idUser='$idclient' AND idObjet='$idobjet') ORDER BY Date DESC");
+		
+	    While($rep=$reponse->fetch()){
+		$auteur=$rep['Pseudo'];
+		$heure=$rep['Date'];
+		$msg=$rep['Message'];
+		
+		echo "<a href=../pages/utilisateurs.php?utilisateur='$auteur'>";
+		echo $auteur;
+		echo '<br>';
+
+		$photopseudo=$auteur.".jpg";
+		if(file_exists("../../images/objets/$photopseudo")){
+		    echo '<img src="../../images/objets/';
+		    echo $auteur;
+		    echo '.jpg"  alt="Photo de profil" width="100" height="100">';
+		}else{
+		    echo '<img src="../../images/objets/none.jpg" alt="Photo de profil" width="50" height="50">';
+		}
+
+		echo '</a>';
+		echo '<textarea rows="5" cols="60" name="message">';
+		echo $msg;
+		echo '</textarea>';
+		echo '<br>';
+
+		
+	    }
+	    
+	}
+	
+	if(isset($_SESSION['id']) && $_SESSION['id'] == $idproprietaire){
+	//L'utilisateur est connecté et proprietaire de l'objet
+	    
+	   
+	    $idobjet=$_GET['id'];
+	    include '../structure/connexion_bdd.php';
+	    $reponse = $bdd->query("SELECT * FROM messageoperation WHERE idObjet='$idobjet' ORDER BY idUser, Date ASC");
+		
+	    While($rep=$reponse->fetch()){
+		$auteur=$rep['Pseudo'];
+		$heure=$rep['Date'];
+		$msg=$rep['Message'];
+		
+		$idechangeur=$rep['idUser'];
+		
+		
+		if(isset($a) && $a !=$idechangeur){
+		  ?> 
+		<form method="post" action="objet.php?id=<?php echo $_GET['id']; ?>">
+		    <input type="hidden" name="idobjet" value="<?php echo $_GET['id']; ?>">
+		    <input type="hidden" name="idclient" value="<?php echo $a; ?>">
+		    <textarea rows="5" cols="60" name="message" required></textarea> 
+		    <input type="submit" name="reponse" value="Répondre" class="petit_bouton">
+		</form>
+	
+		<form method="post" action="objet.php?id=<?php echo $_GET['id']; ?>">
+		    <input type="hidden" name="idobjet" value="<?php echo $_GET['id']; ?>">
+		    <input type="hidden" name="idclient" value="<?php echo $a; ?>">
+		    <label><input type="submit" name="supechange" value="Répondre" class="croix" onclick="if (window.confirm('Etes vous sur de vouloir supprimer cela?')) 
+		    {location.href='default.htm';return true;} else {return false;}">
+		    Supprimer la conversation</label>
+		</form>
+	<br><br><br>
+		<hr>
+		<?php
+		
+		}
+		
+		echo "<a href=../pages/utilisateurs.php?utilisateur='$auteur'>";
+		echo $auteur;
+		echo '<br>';
+
+		$photopseudo=$auteur.".jpg";
+		if(file_exists("../../images/objets/$photopseudo")){
+		    echo '<img src="../../images/objets/';
+		    echo $auteur;
+		    echo '.jpg"  alt="Photo de profil" width="100" height="100">';
+		}else{
+		    echo '<img src="../../images/objets/none.jpg" alt="Photo de profil" width="50" height="50">';
+		}
+
+		echo '</a>';
+		echo '<textarea rows="5" cols="60" name="message" disabled>';
+		echo $msg;
+		echo '</textarea>';
+		echo '<br>';
+		
+		
+		$a=$idechangeur;
+		
+	    }
+	    if(isset($a)){
+		  ?> 
+		<form method="post" action="objet.php?id=<?php echo $_GET['id']; ?>">
+		    <input type="hidden" name="idobjet" value="<?php echo $_GET['id']; ?>">
+		    <input type="hidden" name="idclient" value="<?php echo $idechangeur; ?>">
+		    <textarea rows="5" cols="60" name="message" required></textarea> 
+		    <input type="submit" name="reponse" value="Répondre" class="petit_bouton">
+
+		</form>
+		<form method="post" action="objet.php?id=<?php echo $_GET['id']; ?>">
+		    <input type="hidden" name="idobjet" value="<?php echo $_GET['id']; ?>">
+		    <input type="hidden" name="idclient" value="<?php echo $a; ?>">
+		    <label><input type="submit" name="supechange" value="Répondre" class="croix" onclick="if (window.confirm('Etes vous sur de vouloir supprimer cela?')) 
+		    {location.href='default.htm';return true;} else {return false;}">
+		    Supprimer la conversation</label>
+		</form>
+		<?php
+		}
+	    
+	    
+	}
+
+	
+	
+	?>
+	
+        <h2 style ="font-size:30px">Les commentaires : </h2>
+	
+    <?php 
+        include '../structure/connexion_bdd.php';
+        include_once '../structure/fonction_notation.php';
+        $idObjet=$_GET['id'];
+        $reponse = $bdd->query("SELECT * FROM commentobjet WHERE idObjet='$idObjet'"); 
+
+             while($donnees = $reponse->fetch())
+             {
+                echo '<table>';
+                $idCmteur = $donnees['idUser'];
+                // supp cmt
+                if( $idCmteur == $_SESSION['id'])
+                {
+                    echo '<tr><form method="post">';
+                    echo '<input type="hidden" name="suppcmt" value="';
+                    echo $donnees['idCommentObjet'];
+                    echo '" /><input type="submit" class="croix"';
+                    echo "onclick=\"if (window.confirm('Etes vous sur de vouloir supprimer cela?')) 
+                        {location.href='default.htm';return true;} else {return false;}\"";
+                    echo '></form></tr>';
+                }
+                echo '<tr><td class="image">';
+                $reponse2 = $bdd->query("SELECT Pseudo FROM client WHERE idClient=$idCmteur");
+                if($donnees2 = $reponse2->fetch())
+                {
+                    echo "<a href=../pages/utilisateurs.php?utilisateur='".$donnees2['Pseudo']."'>";
+                    $photocommenteur = $donnees2['Pseudo'].'.jpg';
+                    if(file_exists('../../images/objets/'.$photocommenteur))
+                        echo '<img src="../../images/objets/'.$photocommenteur;
+                    else
+                        echo '<img src="../../images/objets/none.jpg';
+                    echo '" alt="'.$donnees2['Pseudo'].'"';
+                    echo 'width="70" height="70" class="image_cmt"></a>';
+                }
+                else
+                    echo 'none.jpg" alt="Commentateur" width="70" height="70" class="image_cmt">';
+                echo '</td><td style ="font-size:15px">';
+                echo $donnees['Commentaire'];	
+                echo '</td><td>';
+                afficher_les_etoiles($donnees['note']);
+                echo '</td></tr></table>'; 
+             }
+             $reponse->CloseCursor();
+             
+             
+             if (isset($_SESSION['id']) && $_SESSION['id'] != $idproprietaire)
+             {
+                 echo '<form method="post">
+                        <label for="cmt">votre commentaire</label> : </br>
+                        <textarea cols="15" rows="10" type="text" name="cmt" id="cmt"></textarea>
+                        <script type="text/javascript"> 
+                            CKEDITOR.replace("cmt");
+                        </script> 
+                        <fieldset class="rating">
+                            <legend>notation:</legend>
+                            <input type="radio" id="etoile5" name="note" value="5" required/><label for="etoile5" title="EXCELLENT">5 stars</label>
+                            <input type="radio" id="etoile4" name="note" value="4" /><label for="etoile4" title="BON">4 stars</label>
+                            <input type="radio" id="etoile3" name="note" value="3" /><label for="etoile3" title="MOYEN">3 stars</label>
+                            <input type="radio" id="etoile2" name="note" value="2" /><label for="etoile2" title="FAIBLE">2 stars</label>
+                            <input type="radio" id="etoile1" name="note" value="1" /><label for="etoile1" title="TRES FAIBLE">1 star</label>
+                        </fieldset></br>
+                        <input type="submit" class="go" float="right"/></br>
+                       </form>';
+             }
+
+    ?>
+	
+	
+	
+	
+	
+    </article>
+
+
+    
+ 
+    <?php include ('../structure/footer.php');?> 
+</div>
+
+</body>
+</html>

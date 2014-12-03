@@ -1,0 +1,40 @@
+<?php
+function mail_to($addr, $pseudo, $msg, $sub) {
+    
+	require_once("class.phpmailer.php");
+	require_once("class.smtp.php");
+	$mail = new PHPMailer();
+	$mail->CharSet = "UTF-8";
+	$mail->IsSMTP();
+	$mail->SMTPAuth = true;
+	$mail->SMTPSecure = 'ssl';
+        //$mail->SMTPDebug  = 1; 
+        
+	$mail->Host = 'smtp.gmail.com';
+	$mail->Port = 465;
+	$mail->Username = 'gchang.service@gmail.com';
+	$mail->Password = 'BonjourG5c';
+	$mail->SetFrom('gchang.service@gmail.com', 'G5c');
+	$mail->AddReplyTo('gchang.service@gmail.com', 'G5c');
+	$mail->Subject = $sub;
+	$mail->AltBody = $msg;
+	$body = "<p>Chèr(e) $pseudo: </p>"."<p>$msg</p>";
+        
+     /* date_default_timezone_set('Europe/Paris');
+        $current_date = date("H:i:s d/n/Y ");*/
+        
+        $body = $body."<br /><br />Cordialement<br /> Service G5c <br />";
+	$mail->MsgHTML($body);
+	$mail->AddAddress($addr, $pseudo);
+
+	if (!$mail->Send())
+	{
+		echo "erreur!!".$mail->ErrorInfo;
+	}
+	else
+	{
+		echo "mot de passe envoyé!";
+        }
+
+    }
+?>

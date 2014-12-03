@@ -1,0 +1,10 @@
+<?php
+
+include '../structure/connexion_bdd.php';
+$reponse = $bdd->query(" SELECT * FROM objet limit {$_GET['sid']},1");
+    /* where id > {$_GET['sid']} limit 1");*/
+$donnees = $reponse->fetch();
+$jsonencode = json_encode($donnees);
+echo $jsonencode;
+//echo $_GET['sid'];
+?>

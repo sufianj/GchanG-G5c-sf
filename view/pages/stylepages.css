@@ -1,0 +1,202 @@
+*{
+    font-family: Times New Roman;
+    font-size: 16px;
+}
+#page{
+    min-width: 800px;
+    width: 90%;
+    margin: auto;
+    background-color: lightblue;
+    border-radius: 10px;
+}
+a img{
+    border: none;
+}
+/*accueil*/
+#recherche_accueil{
+    margin-left: 25%;
+    margin-top: 80px;
+}
+#barre_recherche_accueil{
+    width: 40%;
+}
+#choix_accueil{
+    margin-left: 25%;
+}
+.check_accueil{
+    margin-left: 5%;
+}   
+.check_dist{
+
+}
+/*corp de page*/
+
+article{
+    margin-left: 10px;
+    margin-top: 2%;
+    min-width: 600px;
+    width: 70%;
+    display: inline-block;
+    margin-right: -0.25em;
+    vertical-align: top;
+
+}
+
+
+
+ /*inscription*/
+ 
+#inscription{
+    margin: 30px;
+    margin-left: 20%;
+}
+#mdp_oublie{
+    margin: 30px;
+    margin-left: 15%;   
+}
+.image_validation{
+    width: 30px;
+}
+
+
+/*mot de passe oublié*/
+.taille_input{
+    width:200px;    
+}
+
+/* echanges */
+#echanges{
+    background-color: #3366ff;
+    width: 95%;
+    padding-left: 0.5%;
+    border-radius: 5px;
+    padding-top: 5px;
+}
+/* echanges_title */
+#echanges_title{
+    font-size: 30px;
+    text-align: center;
+}
+
+
+#mdp_oublie{
+    margin: 30px;
+    margin-left: 15%;   
+}
+.image_validation{
+    width: 30px;
+}
+
+
+/*mot de passe oublié*/
+.taille_input{
+    width:200px;    
+}
+.formeajoutobjet{
+ 
+   
+}
+
+
+
+/*objet*/
+
+.resultatrech{
+    background-color: #3366ff;
+    width: 90%;
+    text-align: left;
+    padding-left: 10px;
+    border-radius: 10px;
+}
+.resultatrech:hover{
+    background-color: #6666cc;
+}
+.image{
+    padding-bottom: 35px;
+    width:100px;
+}
+.resultatrech h1{
+    margin : 0px;
+}
+article a{
+    color: black;
+    text-decoration: none;
+}
+.resultatrech a{
+    text-decoration: underline;
+}
+.normal .lien{
+     color: blue;
+     text-decoration: underline;
+}
+
+.boitediscution{
+    height: 100px;
+    width: 400px; 
+    text-align: left;
+}
+.petit_bouton{
+    background-color: silver;
+    text-align: center; 
+    border-radius: 20px;
+    padding:10px;
+    margin-top: 5px;
+    margin-left: 20px;
+}
+.petit_bouton:hover{
+    background-color: darkgrey;
+
+}
+.croix{
+    background-image: url(../../images/fauxpetit.png);
+    background-repeat:no-repeat;
+    background-position: top;
+    height: 20px;
+    cursor: pointer;
+    font-size:0px;
+    width: 20px;
+    border: none;
+    background-color: transparent;
+}
+
+
+/*commentaire*/
+.image_cmt
+{
+    border-radius: 50%;
+}
+
+
+.ajoutobjetmesobjet{
+    background-color: #3366ff;
+    border-radius: 20px;
+    padding: 10px;
+ }
+
+ 
+ .imageprofil{
+     
+     padding-bottom: 50px;
+ }
+ .cadenasfer{
+    background-image: url(../../images/cadenasfer.png);
+    background-repeat:no-repeat;
+    background-position: top;
+    height: 20px;
+    cursor: pointer;
+    font-size:0px;
+    width: 20px;
+    border: none;
+    background-color: transparent;
+}
+.cadenasouv{
+    background-image: url(../../images/cadenasouv.png);
+    background-repeat:no-repeat;
+    background-position: top;
+    height: 20px;
+    cursor: pointer;
+    font-size:0px;
+    width: 20px;
+    border: none;
+    background-color: transparent;
+}

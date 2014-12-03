@@ -1,0 +1,15 @@
+<?php
+<<<<<<< .mine
+    try 
+    {
+        $bdd = new PDO('mysql:host=localhost;dbname=gchang', 'root', 'isep'); 
+       /* foreach($bdd->query('select * from gchang') as $row)
+        { 
+            print_r($row);
+        }*/
+    } catch (PDOException $e) {
+        echo $e->getMessage();
+    }
+    ?>=======
+    $bdd = new PDO('mysql:host=localhost;dbname=gchang', 'root', ''); 
+?>>>>>>>> .r114

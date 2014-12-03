@@ -1,0 +1,60 @@
+<?php
+include '../structure/connexion_bdd.php';
+	echo '<br />';
+        $resultats = $bdd->query("$reponse"." LIMIT {$_GET['sid']},1");
+	
+	if(isset($_SESSION['id'])){
+	    $idclientcher = $_SESSION['id'];
+	    include '../structure/connexion_bdd.php';
+	    $coordo = $bdd->query("SELECT lat,lon FROM client WHERE idClient='$idclientcher'");
+	    while ($coordonnes = $coordo->fetch()){
+		$lat=$coordonnes['lat'];
+		$lon=$coordonnes['lon'];
+	    }
+	}
+	if(isset($_GET['tridist'])){
+	    if(!(isset($_SESSION['id']) && $lat!=0 && $lon!=0)){
+		echo "Le tri par distance n'est disponible que pour les personnes connectées ayant indiquées leur localisation sur la page mon compte";
+		echo '<br /><br />';
+		
+	    }
+	}
+	if(isset($_SESSION['id']) && $lat!=0 && $lon!=0){
+	    
+	include ("../structure/googlemap/traitementcoor.php");
+	}else{
+	if($donnees = $resultats->fetch())
+        {
+	    echo '<a href="../pages/objet.php?id=';
+	    echo $donnees['idObjet'];
+		echo "\">";
+		echo '<table class="resultatrech"><tr><td></td><td><h1 style ="font-size:20px">';
+		echo $donnees['TitreObjet'];
+		$photoobjet = $donnees['idObjet'].'.jpg';
+                echo '</h1></td></tr><tr><td class="image">';
+                if (file_exists("../../images/objets/$photoobjet"))
+		{
+                    echo '<img src="../../images/objets/';
+                    echo $donnees['idObjet'];
+                    echo '.jpg"  alt="Objet" width="100" height="100">';
+                
+                }
+                else{
+                    echo '<img src="../../images/objets/none.jpg" width="100" height="100">';
+                }
+                echo '</td><td style ="font-size:15px">Description : ';
+                echo $donnees['DescriptionObjet'];
+		echo '<br /> Type d\'opération : ';
+		echo $donnees['TypeOperation'];
+		echo '<br /> Propriétaire : ';
+		echo "<a href=../pages/utilisateurs.php?utilisateur='".$donnees['PseudoProprio']."'>";
+		echo $donnees['PseudoProprio'];
+		echo '</a>';	
+		echo '</td></tr></table>';
+		echo '</a>';
+		echo '<br /><br />';
+        }	
+        
+	}
+
+?>

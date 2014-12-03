@@ -1,0 +1,37 @@
+<table id="tableau_categorie_accueil">
+    <tr>
+        <td id="tableau_caroussel_bouton">
+            <form method="post" action="traitement.php">
+
+
+                <input type="radio" name="categorie" value="recent" id="recent" checked /> <label for="recent">Ajout récents</label><br/>
+                <input type="radio" name="categorie" value="consulte" id="consulte" /> <label for="consulte">Les plus consultés</label><br/>
+                <input type="radio" name="categorie" value="bricolage" id="bricolage" /> <label for="bricolage">Bricolage</label><br/>
+                <input type="radio" name="categorie" value="plus40" id="cuisine" /> <label for="cuisine">Cuisine</label>
+
+            </form>
+        </td>
+
+        <td class="tableau_caroussel">
+            <h2>Objet 1</h2>
+            <img src="../../images/objet1.png" alt="objet 1" class="objet 1" /><br/>	
+            Une magnifique armoire en bois massif
+        </td>
+        <td class="tableau_caroussel">
+            <h2>Objet 2</h2>
+            <img src="../../images/objet2.png" alt="objet 2" class="objet 2" /><br/>
+            Une magnifique horloge teintée d'argent						
+        </td>
+        <td class="tableau_caroussel">
+            <h2>Objet 3</h2>
+            <img src="../../images/objet3.png" alt="objet 3" class="objet 3" /><br/>
+            Un tout petit sèche cheveux						
+        </td>
+        <td class="tableau_caroussel">
+            <h2>Objet 4</h2>
+            <img src="../../images/objet4.png" alt="objet 4" class="objet 4" /><br/>
+            Je sais pas trop ce que c'est...
+        </td>
+    </tr>
+
+</table>

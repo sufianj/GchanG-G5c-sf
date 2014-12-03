@@ -1,0 +1,243 @@
+<?php 
+    session_start();
+    $page='utilisateur';
+    if(!isset($_GET['utilisateur'])){
+    $url="../pages/accueil.php";
+    die('<meta http-equiv="refresh" content="0;URL='.$url.'">');
+    }
+?>
+
+<!DOCTYPE HTML>
+
+
+<html>
+	<head>
+                <meta charset="utf-8" />
+                <link rel="stylesheet" href="stylepages.css" />
+                <link rel="stylesheet" href="etoile.css" />
+                <link rel="stylesheet" href="../structure/stylestructure.css" />
+                <link rel="icon" type="images/png" href="../../images/favicone.png">
+                <title>GchanG</title>
+                <script type="text/javascript" src="../structure/ckeditor/ckeditor.js"></script> 
+	</head>
+        
+        
+        
+<body>
+    
+<div id="page">
+    
+    <?php include ('../structure/header.php');?>
+    
+    <?php include ('../structure/nav.php');?>
+    
+    <?php include ('../structure/aside.php');?>
+    
+    <!--corps-->
+    <article>
+        
+        <?php
+             if (isset($_POST['cmt']) && isset($_SESSION['id']))
+             {
+                 include '../structure/connexion_bdd.php';
+                 $reponse = $bdd->query("SELECT idClient FROM client "
+                         . "WHERE Pseudo=$_GET[utilisateur];");
+                 if($donnees=$reponse->fetch())
+                 {
+                     $idCmte = $donnees['idClient'];
+                     $idCmteur = $_SESSION['id'];
+                     $cmt = $_POST['cmt'];
+                     $note = $_POST['note'];
+                     //include '../structure/connexion_bdd.php';
+                     $bdd->exec("INSERT INTO commentuser(idUserCommentateur, "
+                             . "idUserCommente, Commentaire, note)"
+                             . " VALUES('$idCmteur','$idCmte',' $cmt', '$note')");
+                 }
+                 $reponse->CloseCursor();
+                
+             }
+             
+            if(isset($_POST['suppcmt']))
+            {
+                            $suppcmt = $_POST['suppcmt'];
+                            include '../structure/connexion_bdd.php';
+                            $bdd->exec("DELETE FROM commentuser WHERE idCommentUser = '$suppcmt'");
+            }
+        ?>
+
+	<h2 style ="font-size:30px">Utilisateur : </h2>
+        <?php
+	
+        include '../structure/connexion_bdd.php';
+        include_once '../structure/fonction_notation.php';
+	echo '<table><tr><td><p class="image">';
+	$user = $_GET['utilisateur'];
+	$photopseudo=$user.".jpg";
+	$photopseudo = str_replace ( "'", "", $photopseudo);
+	if(file_exists("../../images/objets/$photopseudo")){
+	    echo '<img src="../../images/objets/';
+	    echo $photopseudo;
+	    echo '"  alt="Photo de profil" width="100" height="100" class="imageprofil">';
+	}else{
+	    echo '<img src="../../images/objets/none.jpg" alt="Photo de profil" width="100" height="100">';
+	}
+
+	
+	echo '</p></td><td>';
+        
+        $reponse = $bdd->query("SELECT idClient,Pseudo,NomUtilisateur,PrenomUtilisateur,Sexe,DateNaissance FROM client WHERE Pseudo=$_GET[utilisateur];");
+        $donnees = $reponse->fetch();
+        echo 'Pseudo: ';
+        echo $donnees['Pseudo'];
+        echo '<br />';
+        echo 'Nom: ';
+        echo $donnees['NomUtilisateur'];
+        echo '<br />';
+        echo 'Prenom: ';
+        echo $donnees['PrenomUtilisateur'];
+        echo '<br />';
+        echo 'Sexe: ';
+        echo $donnees['Sexe'];
+        echo '<br />';
+        echo 'Date de naissance: ';
+        echo $donnees['DateNaissance'].'<br />';
+        //moyenne de notes
+        $reponse3 = $bdd->query("SELECT AVG(note) FROM commentuser WHERE idUserCommente=$donnees[idClient];");
+            if($donnees3 = $reponse3->fetch())
+            {
+                echo "moyenne de notes:";
+                afficher_les_etoiles($donnees3['AVG(note)']);
+            }
+            else 
+            {
+                echo "moyenne de notes:";
+                afficher_les_etoiles(0);
+            }
+                
+        $reponse3->CloseCursor();
+        echo '</td></tr></table>';
+        $reponse->CloseCursor();
+        ?>
+        
+        <h2 style ="font-size:30px">Ses objets : </h2>
+	
+	   <?php include '../structure/connexion_bdd.php';
+
+	   $pseudoproprio = $_GET['utilisateur'];
+	   $reponse = $bdd->query("SELECT * FROM objet WHERE PseudoProprio=$pseudoproprio"); 
+		
+		while($donnees=$reponse->fetch()){
+		
+		    
+		echo '<a href="../pages/objet.php?id=';
+		echo $donnees['idObjet'];
+		echo "\">";
+                echo '<table class="resultatrech"></td><td><td><h1 style ="font-size:20px">';
+		echo $donnees['TitreObjet'];
+		echo '</h1></td><tr><td class="image">';
+                                $photoobjet = $donnees['idObjet'].'.jpg';
+                if (file_exists("../../images/objets/$photoobjet"))
+		{
+                    echo '<img src="../../images/objets/';
+                    echo $donnees['idObjet'];
+                    echo '.jpg"  alt="Objet" width="100" height="100">';
+                
+                }
+                else{
+                    echo '<img src="../../images/objets/none.jpg" width="100" height="100">';
+                }
+		echo '</td><td style ="font-size:15px">Description : ';
+                echo $donnees['DescriptionObjet'];
+		echo '<br /> Type d\'opération : ';
+		echo $donnees['TypeOperation'];
+		echo '</td></tr></table>';
+		echo '<br /><br />';
+		echo '</a>';
+   
+		}
+		$reponse->CloseCursor();
+		
+		?>
+		    
+        <h2 style ="font-size:30px">Ses commentaires : </h2>
+	
+    <?php 
+        include '../structure/connexion_bdd.php';
+        include_once '../structure/fonction_notation.php';
+        $pseudocommente = $_GET['utilisateur'];
+        $reponse = $bdd->query("SELECT * FROM commentuser WHERE idUserCommente IN"
+                . " (SELECT idClient FROM client WHERE Pseudo = $pseudocommente)"); 
+
+             while($donnees=$reponse->fetch())
+             {
+                echo '<table>';//todo:class="??"
+                // supp cmt
+                $idCmteur = $donnees['idUserCommentateur'];
+                if( $idCmteur == $_SESSION['id'])
+                {
+                    echo '<tr><form method="post">';
+                    echo '<input type="hidden" name="suppcmt" value="';
+                    echo $donnees['idCommentUser'];
+                    echo '" /><input type="submit" class="croix"';
+                    echo "onclick=\"if (window.confirm('Etes vous sur de vouloir supprimer cela?')) 
+                        {location.href='default.htm';return true;} else {return false;}\"";
+                    echo '></form></tr>';
+                }
+                
+                echo '<tr><td class="image">';
+                $reponse2 = $bdd->query("SELECT Pseudo FROM client WHERE idClient=$idCmteur");
+                if($donnees2 = $reponse2->fetch())
+                {
+                    echo "<a href=../pages/utilisateurs.php?utilisateur='".$donnees2['Pseudo']."'>";
+                    $photocommenteur = $donnees2['Pseudo'].'.jpg';
+                    if(file_exists('../../images/objets/'.$photocommenteur))
+                        echo '<img src="../../images/objets/'.$photocommenteur;
+                    else
+                        echo '<img src="../../images/objets/none.jpg';
+                    echo '" alt="'.$donnees2['Pseudo'].'"';
+                    echo 'width="70" height="70" class="image_cmt"></a>';
+                }
+                else
+                    echo 'none.jpg" alt="Commentateur" width="70" height="70" class="image_cmt">';
+                echo '</td><td style ="font-size:15px">';
+                echo $donnees['Commentaire'];	
+                echo '</td><td>';
+                afficher_les_etoiles($donnees['note']);
+                echo '</td></tr></table>'; 
+             }
+             $reponse->CloseCursor();
+             
+             $reponse = $bdd->query("SELECT idClient FROM client WHERE Pseudo = $pseudocommente");
+             if ($donnees = $reponse->fetch())
+                if (isset($_SESSION['id']) && $_SESSION['id'] != $donnees['idClient'])
+                {
+                    echo '<form method="post">
+                           <label for="cmt">votre commentaire</label> : </br>
+                           <textarea cols="15" rows="10" type="text" name="cmt" id="cmt"></textarea>
+                           <script type="text/javascript"> 
+                               CKEDITOR.replace("cmt");
+                           </script> 
+                           <fieldset class="rating">
+                               <legend>notation:</legend>
+                               <input type="radio" id="etoile5" name="note" value="5" required/><label for="etoile5" title="EXCELLENT">5 stars</label>
+                               <input type="radio" id="etoile4" name="note" value="4" /><label for="etoile4" title="BON">4 stars</label>
+                               <input type="radio" id="etoile3" name="note" value="3" /><label for="etoile3" title="MOYEN">3 stars</label>
+                               <input type="radio" id="etoile2" name="note" value="2" /><label for="etoile2" title="FAIBLE">2 stars</label>
+                               <input type="radio" id="etoile1" name="note" value="1" /><label for="etoile1" title="TRES FAIBLE">1 star</label>
+                           </fieldset></br>
+                           <input type="submit" class="go" float="right"/></br>
+                          </form>';
+                }
+
+    ?>
+
+    </article>
+
+
+    
+ 
+    <?php include ('../structure/footer.php');?> 
+</div>
+
+</body>
+</html>

@@ -1,0 +1,364 @@
+-- phpMyAdmin SQL Dump
+-- version 4.0.4
+-- http://www.phpmyadmin.net
+--
+-- Client: localhost
+-- Généré le: Jeu 19 Décembre 2013 à 10:25
+-- Version du serveur: 5.6.12-log
+-- Version de PHP: 5.4.12
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+
+--
+-- Base de données: `gchangtest`
+--
+CREATE DATABASE IF NOT EXISTS `gchangtest` DEFAULT CHARACTER SET utf8 COLLATE utf8_bin;
+USE `gchangtest`;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `admin`
+--
+
+CREATE TABLE IF NOT EXISTS `admin` (
+  `idAmin` int(8) NOT NULL AUTO_INCREMENT,
+  `Nom` text CHARACTER SET latin1 COLLATE latin1_bin NOT NULL,
+  `Contenu` text CHARACTER SET latin1 COLLATE latin1_bin NOT NULL,
+  PRIMARY KEY (`idAmin`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=5 ;
+
+--
+-- Contenu de la table `admin`
+--
+
+INSERT INTO `admin` (`idAmin`, `Nom`, `Contenu`) VALUES
+(1, 'cgu', '   bonjour test  '),
+(2, 'aide', 'aide'),
+(3, 'qsn', '   <h1>Qui sommes-nous?</h1> <br /><br />                  Gchang.com est un site de petites annonces qui part d''une idÃƒÂ©e simple : mettre en contact les vendeurs, donneurs, ÃƒÂ©changeur, troqueur et, les personnes dÃƒÂ©sirant faire de bonnes affaires.<br /><br />                     Sur Gchang.com, dÃƒÂ©poser une annonce vous prendra 2 minutes. Vous choisissez le type de transaction parmis don, troc, prÃƒÂªt et location. SÃƒÂ©lectionnez une catÃƒÂ©gorie puis saisissez le texte de votre annonce. <br />         Remplissez le formulaire d''inscription afin dÃƒÂªtre informÃƒÂ© de l''ÃƒÂ©tat de vos annonces et clients potentiels: cest simple, efficace et en plus totalement gratuit.<br />         Gchang.com est un site gÃƒÂ©nÃƒÂ©raliste. Vous pouvez dÃƒÂ©poser des annonces dans de nombreuses catÃƒÂ©gories. <br />         Pour plus d''informations, vous pouvez ÃƒÂ©galement consulter la listes des questions / rÃƒÂ©ponses sur le forum. <br /><br />          A bientÃƒÂ´t sur gchang.com <br />         Cordialement,<br />         L''ÃƒÂ©quipe GchanG '),
+(4, 'contact', '  <h1>Service clientÃƒÂ¨le</h1>         Pour toute question, n''hÃƒÂ©sitez pas ÃƒÂ  rechercher une rÃƒÂ©ponse ÃƒÂ  votre question en utilisant le forum mis a votre disposition.         Pour un signalement d''un abus, veuillez en prioritÃƒÂ© cliquer sur les boutons signaler un abus sur les pages correspondantes ou          Si aucune rÃƒÂ©ponse ne vous satisfait, envoyez un mail clair ÃƒÂ  l''ÃƒÂ©quipe ÃƒÂ  l''adresse serviceclient@gchang.com.    <br />         Nous restons ÃƒÂ  votre ÃƒÂ©coute.<br /><br />         Cordialement, <br />         L''ÃƒÂ©quipe GchanG ');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `alerteforum`
+--
+
+CREATE TABLE IF NOT EXISTS `alerteforum` (
+  `idAlerteForum` int(8) NOT NULL DEFAULT '0',
+  `Commentaire` varchar(300) COLLATE latin1_bin DEFAULT NULL,
+  `DateAlerte` date DEFAULT NULL,
+  `idConversationForum` int(8) NOT NULL,
+  `idUser` int(8) DEFAULT NULL,
+  PRIMARY KEY (`idAlerteForum`),
+  KEY `idConversationForum` (`idConversationForum`),
+  KEY `idUser` (`idUser`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_bin;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `categorie`
+--
+
+CREATE TABLE IF NOT EXISTS `categorie` (
+  `idCategorie` int(25) NOT NULL AUTO_INCREMENT,
+  `NomCategorie` text COLLATE latin1_bin,
+  PRIMARY KEY (`idCategorie`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COLLATE=latin1_bin AUTO_INCREMENT=4 ;
+
+--
+-- Contenu de la table `categorie`
+--
+
+INSERT INTO `categorie` (`idCategorie`, `NomCategorie`) VALUES
+(1, 'Transport'),
+(2, 'Hi Tech'),
+(3, 'Maison');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `categorieforum`
+--
+
+CREATE TABLE IF NOT EXISTS `categorieforum` (
+  `idCategorieForum` int(8) NOT NULL AUTO_INCREMENT,
+  `Titre` varchar(30) COLLATE latin1_bin NOT NULL DEFAULT '',
+  PRIMARY KEY (`idCategorieForum`,`Titre`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_bin AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `client`
+--
+
+CREATE TABLE IF NOT EXISTS `client` (
+  `idClient` int(8) NOT NULL AUTO_INCREMENT,
+  `Pseudo` varchar(10) COLLATE latin1_bin DEFAULT NULL,
+  `Pwd` varchar(15) COLLATE latin1_bin NOT NULL,
+  `AdresseMail` varchar(25) COLLATE latin1_bin DEFAULT NULL,
+  `NomUtilisateur` varchar(15) COLLATE latin1_bin DEFAULT NULL,
+  `PrenomUtilisateur` varchar(15) COLLATE latin1_bin DEFAULT NULL,
+  `Sexe` varchar(10) COLLATE latin1_bin DEFAULT NULL,
+  `DateNaissance` date DEFAULT NULL,
+  `DateInscription` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `NumRue` int(5) DEFAULT NULL,
+  `Rue` varchar(25) COLLATE latin1_bin DEFAULT NULL,
+  `CodePostal` int(5) DEFAULT NULL,
+  `Ville` varchar(25) COLLATE latin1_bin DEFAULT NULL,
+  `Pays` varchar(15) COLLATE latin1_bin DEFAULT NULL,
+  `Lat` decimal(65,30) NOT NULL,
+  `Lon` decimal(65,30) NOT NULL,
+  `adresse` text COLLATE latin1_bin NOT NULL,
+  PRIMARY KEY (`idClient`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COLLATE=latin1_bin AUTO_INCREMENT=6 ;
+
+--
+-- Contenu de la table `client`
+--
+
+INSERT INTO `client` (`idClient`, `Pseudo`, `Pwd`, `AdresseMail`, `NomUtilisateur`, `PrenomUtilisateur`, `Sexe`, `DateNaissance`, `DateInscription`, `NumRue`, `Rue`, `CodePostal`, `Ville`, `Pays`, `Lat`, `Lon`, `adresse`) VALUES
+(1, 'Admin', 'Admin', 'admin@admin', 'Admin', 'Admin', NULL, NULL, '2013-12-10 15:38:20', NULL, NULL, NULL, NULL, NULL, '0.000000000000000000000000000000', '0.000000000000000000000000000000', ''),
+(2, 'Olive', '12az&', 'olive@olive', 'olivier', 'Mathieu', 'masculin', '2013-12-12', '2013-12-19 09:46:48', NULL, NULL, NULL, NULL, NULL, '49.055609000000000000000000000000', '-0.512191300000040400000000000000', 'mesnil'),
+(3, 'Xav', '12az&', 'xav@xav', 'Xavier', 'JEANNENEY', 'masculin', '2013-12-12', '2013-12-19 09:53:17', NULL, NULL, NULL, NULL, NULL, '48.849766000000000000000000000000', '2.132504000000040000000000000000', 'La celles saint cloud'),
+(4, 'Marie', '12az&', 'marie@marie', 'Marie', 'Marie', 'feminin', '2013-12-10', '2013-12-19 09:55:34', NULL, NULL, NULL, NULL, NULL, '48.390394000000000000000000000000', '-4.486076000000025500000000000000', 'Brest'),
+(5, 'Camille', '12az&', 'cam@cam', 'Camille', 'Camille', 'feminin', '2013-12-17', '2013-12-19 09:56:14', NULL, NULL, NULL, NULL, NULL, '43.696036000000000000000000000000', '7.265591999999970000000000000000', 'nice');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `commentobjet`
+--
+
+CREATE TABLE IF NOT EXISTS `commentobjet` (
+  `idCommentObjet` int(8) NOT NULL,
+  `Commentaire` varchar(300) COLLATE latin1_bin NOT NULL,
+  `idUser` int(8) DEFAULT NULL,
+  `idObjet` int(8) NOT NULL,
+  KEY `idUser` (`idUser`),
+  KEY `idObjet` (`idObjet`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_bin;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `commentuser`
+--
+
+CREATE TABLE IF NOT EXISTS `commentuser` (
+  `idCommentUser` int(8) NOT NULL,
+  `idUserCommentateur` int(8) DEFAULT NULL,
+  `idUserCommente` int(8) NOT NULL,
+  `Commentaire` varchar(300) COLLATE latin1_bin NOT NULL,
+  PRIMARY KEY (`idCommentUser`),
+  KEY `idUserCommentateur` (`idUserCommentateur`),
+  KEY `idUserCommente` (`idUserCommente`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_bin;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `conversationforum`
+--
+
+CREATE TABLE IF NOT EXISTS `conversationforum` (
+  `idConversationForum` int(8) NOT NULL AUTO_INCREMENT,
+  `TitreConv` varchar(30) COLLATE latin1_bin NOT NULL,
+  `TitreCategorieForum` varchar(30) COLLATE latin1_bin NOT NULL,
+  `Pseudo` varchar(10) COLLATE latin1_bin NOT NULL,
+  `Date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `StatutTopic` int(1) NOT NULL,
+  PRIMARY KEY (`idConversationForum`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COLLATE=latin1_bin AUTO_INCREMENT=6 ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `messageforum`
+--
+
+CREATE TABLE IF NOT EXISTS `messageforum` (
+  `idMessageForum` int(25) NOT NULL AUTO_INCREMENT,
+  `idConversationForum` int(8) DEFAULT NULL,
+  `Date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `Pseudo` varchar(10) COLLATE latin1_bin NOT NULL,
+  `Contenu` longtext COLLATE latin1_bin NOT NULL,
+  `StatutMessageForum` int(1) NOT NULL,
+  PRIMARY KEY (`idMessageForum`),
+  KEY `idConversationForum` (`idConversationForum`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_bin AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `messageoperation`
+--
+
+CREATE TABLE IF NOT EXISTS `messageoperation` (
+  `idMessageOperation` varchar(25) COLLATE latin1_bin NOT NULL DEFAULT '',
+  `Date` date DEFAULT NULL,
+  `Heure` date DEFAULT NULL,
+  `idUser` int(8) DEFAULT NULL,
+  `idOperation` int(8) NOT NULL,
+  `Message` varchar(300) COLLATE latin1_bin NOT NULL,
+  PRIMARY KEY (`idMessageOperation`),
+  KEY `idUser` (`idUser`),
+  KEY `idOperation` (`idOperation`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_bin;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `objet`
+--
+
+CREATE TABLE IF NOT EXISTS `objet` (
+  `idObjet` int(8) NOT NULL AUTO_INCREMENT,
+  `TitreObjet` varchar(25) COLLATE latin1_bin DEFAULT NULL,
+  `idUtilisateur` int(8) DEFAULT NULL,
+  `TypeOperation` varchar(10) COLLATE latin1_bin DEFAULT NULL,
+  `DescriptionObjet` longtext COLLATE latin1_bin NOT NULL,
+  `idCategorie` int(8) NOT NULL,
+  `idGrosseCat` int(11) NOT NULL,
+  `PseudoProprio` varchar(15) COLLATE latin1_bin NOT NULL,
+  PRIMARY KEY (`idObjet`),
+  KEY `idUtilisateur` (`idUtilisateur`),
+  KEY `idCategorie` (`idCategorie`),
+  KEY `idGrosseCat` (`idGrosseCat`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COLLATE=latin1_bin AUTO_INCREMENT=22 ;
+
+--
+-- Contenu de la table `objet`
+--
+
+INSERT INTO `objet` (`idObjet`, `TitreObjet`, `idUtilisateur`, `TypeOperation`, `DescriptionObjet`, `idCategorie`, `idGrosseCat`, `PseudoProprio`) VALUES
+(4, '2 cv', 5, 'Pret', 'petite voiture', 3, 1, 'Camille'),
+(5, 'Cuisiniere', 5, 'Location', 'Tres bon Ã©tat', 15, 3, 'Camille'),
+(6, 'iphone', 5, 'Troc', 'un peu abimÃ©', 5, 2, 'Camille'),
+(7, 'petit velo', 5, 'Don', 'le velo de mon enfance', 11, 1, 'Camille'),
+(9, 'Bus', 4, 'Location', 'bus typique de londres', 2, 1, 'Marie'),
+(10, 'vieux portable', 4, 'Troc', 'nokia assez ancien', 5, 2, 'Marie'),
+(11, 'baignoire', 4, 'Don', 'petite baignoire sympathique', 6, 3, 'Marie'),
+(12, 'set de table', 4, 'Pret', 'set de table trÃ¨s pratique', 15, 3, 'Marie'),
+(13, 'Ordinateur ', 2, 'Location', 'bon ordi en bon etat', 9, 2, 'Olive'),
+(14, 'enceintes', 3, 'Location', 'bonne enceintes audio utiles pour des soirÃ©es', 4, 2, 'Xav'),
+(15, 'lit', 2, 'Troc', 'tres beau lit a baldaquins', 6, 3, 'Olive'),
+(16, 'mobylette', 3, 'Troc', 'mobylette pratique et pas besoin de permis', 2, 1, 'Xav'),
+(17, 'samsung S2', 2, 'Don', 'portable en bon Ã©tat, je le donne', 5, 2, 'Olive'),
+(18, 'four', 2, 'Pret', 'four tres puiisant', 15, 3, 'Olive'),
+(19, 'porsche', 3, 'Pret', 'voiture assez sympa pour partir en vacance', 3, 1, 'Xav'),
+(21, 'Table', 3, 'Don', 'Ensemble de table et chaises pour une salle Ã  manger', 13, 3, 'Xav');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `operation`
+--
+
+CREATE TABLE IF NOT EXISTS `operation` (
+  `idOperation` int(8) NOT NULL AUTO_INCREMENT,
+  `idObjet` int(8) DEFAULT NULL,
+  `DateAccord` date DEFAULT NULL,
+  `DateEchange` date DEFAULT NULL,
+  `idUser2` int(8) NOT NULL,
+  PRIMARY KEY (`idOperation`),
+  KEY `idObjet` (`idObjet`),
+  KEY `idUser2` (`idUser2`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_bin AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `subcategorie`
+--
+
+CREATE TABLE IF NOT EXISTS `subcategorie` (
+  `idSubCategorie` int(8) NOT NULL AUTO_INCREMENT,
+  `NomSubCategorie` text COLLATE latin1_bin NOT NULL,
+  `CategorieAssocie` text COLLATE latin1_bin NOT NULL,
+  `idCategorieAssocie` int(25) NOT NULL,
+  PRIMARY KEY (`idSubCategorie`),
+  KEY `idCategorieAssocie` (`idCategorieAssocie`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COLLATE=latin1_bin AUTO_INCREMENT=8 ;
+
+--
+-- Contenu de la table `subcategorie`
+--
+
+INSERT INTO `subcategorie` (`idSubCategorie`, `NomSubCategorie`, `CategorieAssocie`, `idCategorieAssocie`) VALUES
+(1, 'Voitures', 'Transport', 1),
+(2, 'Telephones', 'Hi Tech', 2),
+(4, 'Ordinateurs', 'Hi Tech', 2),
+(5, 'Velos', 'Transport', 1),
+(6, 'Salle a manger', 'Maison', 3),
+(7, 'Cuisine', 'Maison', 3);
+
+--
+-- Contraintes pour les tables exportées
+--
+
+--
+-- Contraintes pour la table `alerteforum`
+--
+ALTER TABLE `alerteforum`
+  ADD CONSTRAINT `alerteforum_ibfk_1` FOREIGN KEY (`idConversationForum`) REFERENCES `conversationforum` (`idConversationForum`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `alerteforum_ibfk_2` FOREIGN KEY (`idUser`) REFERENCES `client` (`idClient`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+--
+-- Contraintes pour la table `commentobjet`
+--
+ALTER TABLE `commentobjet`
+  ADD CONSTRAINT `commentobjet_ibfk_1` FOREIGN KEY (`idObjet`) REFERENCES `objet` (`idObjet`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `commentobjet_ibfk_2` FOREIGN KEY (`idUser`) REFERENCES `client` (`idClient`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+--
+-- Contraintes pour la table `commentuser`
+--
+ALTER TABLE `commentuser`
+  ADD CONSTRAINT `commentuser_ibfk_1` FOREIGN KEY (`idUserCommentateur`) REFERENCES `client` (`idClient`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `commentuser_ibfk_2` FOREIGN KEY (`idUserCommente`) REFERENCES `client` (`idClient`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Contraintes pour la table `messageforum`
+--
+ALTER TABLE `messageforum`
+  ADD CONSTRAINT `messageforum_ibfk_1` FOREIGN KEY (`idConversationForum`) REFERENCES `categorieforum` (`idCategorieForum`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Contraintes pour la table `messageoperation`
+--
+ALTER TABLE `messageoperation`
+  ADD CONSTRAINT `messageoperation_ibfk_1` FOREIGN KEY (`idUser`) REFERENCES `client` (`idClient`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `messageoperation_ibfk_2` FOREIGN KEY (`idOperation`) REFERENCES `operation` (`idOperation`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Contraintes pour la table `objet`
+--
+ALTER TABLE `objet`
+  ADD CONSTRAINT `objet_ibfk_4` FOREIGN KEY (`idUtilisateur`) REFERENCES `client` (`idClient`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Contraintes pour la table `operation`
+--
+ALTER TABLE `operation`
+  ADD CONSTRAINT `operation_ibfk_1` FOREIGN KEY (`idObjet`) REFERENCES `objet` (`idObjet`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `operation_ibfk_2` FOREIGN KEY (`idUser2`) REFERENCES `client` (`idClient`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Contraintes pour la table `subcategorie`
+--
+ALTER TABLE `subcategorie`
+  ADD CONSTRAINT `subcategorie_ibfk_1` FOREIGN KEY (`idCategorieAssocie`) REFERENCES `categorie` (`idCategorie`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

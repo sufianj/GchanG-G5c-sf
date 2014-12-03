@@ -1,0 +1,16 @@
+<h2>Résultat de:</h2>
+                Recherche pour  
+                    <?php echo "\""; if (isset($_GET["recherche"]))echo $_GET["recherche"]; echo "\""; ?>  </br>
+                Catégorie: 
+                    <?php if (isset($_GET["categorie"]))echo $_GET["categorie"]; ?> </br>
+                Type d'échanges: 
+                    <?php 
+                        if (isset($_GET["operation"])){$cnt  = 0;
+                            foreach ($_GET["operation"] as $value){
+                                if ($cnt > 0)
+                                    echo ", ";
+                                echo $value;
+                                $cnt++;
+                            }
+                        };
+                    ?> 

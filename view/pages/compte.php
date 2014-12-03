@@ -1,0 +1,176 @@
+<?php 
+    session_start();
+    $page='compte';
+    if(!isset($_SESSION['id'])){
+	$url="../pages/compteinexistant.php";
+	die('<meta http-equiv="refresh" content="0;URL='.$url.'">');
+	
+	 
+    }
+?>
+<!DOCTYPE HTML>
+<html>
+	<head>
+                <meta charset="utf-8" />
+                <link rel="stylesheet" href="stylepages.css" />
+                <link rel="stylesheet" href="../structure/stylestructure.css" />
+                <link rel="icon" type="images/png" href="../../images/favicone.png">
+		<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key=ABQIAAAAssNHsvRmdjbfaHQLGJe4IBRUsz-pYg_Ma22JMdFSMvaUp2krUhQPGyzeHUvioNuo_7zqLxrqnekFOQ" type="text/javascript"></script>
+                <title>GchanG</title>
+	</head>
+        
+      <?php 
+      if(isset($_POST['envoiimage'])){
+   $name = $_SESSION['pseudo'];
+   $name = $name.".jpg";
+    $_FILES['imageProfil']['name']= $name;
+    
+
+
+    //TODO: normalement on enregistre le chemin de fichier dans base des donnees
+    define("CHEMIN_IMAGE",'../../images/objets/');//poids constant
+    /*$image = $_POST['image'];*/   
+    if (is_uploaded_file($_FILES['imageProfil']['tmp_name']))
+    {
+    /*    copy ($_FILES['imageObjet']['tmp_name'], CHEMIN_IMAGE.$_FILES['imageObjet']['name']);
+        echo $_FILES['imageObjet']['tmp_name'];*/
+        
+        //verification du type
+        if($_FILES['imageProfil']['type'] != "image/png" && 
+               $_FILES['imageProfil']['type'] != "image/jpeg" &&
+                $_FILES['imageProfil']['type'] != "image/bmp")
+        {   
+            echo "l'image doit être téléchargée en format jpeg ou png ou bmp";
+        }
+        // je sais pas vous voulez combien le taille XD
+        elseif ($_FILES['imageProfil']['size'] > 1048576)//environ iMo.Par default, upload_max_filesize = 2Mo <- bug T_T
+        {
+            echo "limite de taille dépassée.";
+        }
+        //déplacer le fichier de wamp/tmp à wamp/www/G5c/image/objects
+        else if (move_uploaded_file($_FILES['imageProfil']['tmp_name'],
+                    CHEMIN_IMAGE.$_FILES['imageProfil']['name'])){
+            echo "fichier est téléchargé réussi";
+        }
+        else{
+            echo "<p>telecharge erreur</p>";
+        }
+    }//end of if (is_uploaded_file($_FILES['imageObjet']['tmp_name']))
+    else{
+        echo "<p>fichier n'est pas téléchargé à serveur</p>";
+    }
+      }
+?>  
+<body>
+    
+<div id="page">
+    
+    <?php include ('../structure/header.php');?>
+    
+    <?php include ('../structure/nav.php');?>
+    
+    <?php include ('../structure/aside.php');?>
+    
+   <?php include ('../structure/fonctionsmaj.php');?>
+    <!--corps-->
+    <article>
+	
+	
+	<?php
+	    if(isset($_POST['mail'])){
+		if(mailexistant($_POST['mail'])){
+		    $mail = $_POST['mail'];
+		    $idclient = $_SESSION['id'];
+
+		    include '../structure/connexion_bdd.php';
+		    $bdd->exec("UPDATE client SET AdresseMail='$mail' WHERE idClient='$idclient'");
+		    $retour="Adresse mail mise à jour";
+		    $_SESSION['mail']=$mail;
+		}else{
+		    $retour="Le mail est déjà pris";
+
+		}
+	    }
+	    if(isset($_POST['supcompte'])){
+		echo 'test';
+		include '../structure/connexion_bdd.php';
+		$iduser=$_POST['idclient'];
+		echo $iduser;
+		$bdd->exec("DELETE FROM client WHERE idClient = $iduser");
+		session_destroy();
+		header('Location: ../pages/accueil.php');
+	    }
+	    
+	    if(isset($_POST['mdp'])){
+		if(mdpcorrect($_POST['mdp'])){
+		    if(isset($_POST['mdpv']) && isset($_POST['mdp'])){
+			if(mdpegal($_POST['mdp'],$_POST['mdpv'])){
+			    $pwd = $_POST['mdp'];
+			    $idclient = $_SESSION['id'];
+
+			    include '../structure/connexion_bdd.php';
+			    $bdd->exec("UPDATE client SET Pwd='$pwd' WHERE idClient='$idclient'");
+			    $retour="Mot de passe mis à jour";
+			}else{
+			    $retour="Les mots de passe sont differents";
+			}
+			
+		    }
+		}else{
+		    $retour="Mot de passe trop simple";
+		}
+		
+	    }
+	    
+	?>
+	
+
+
+        <h1>Mettre à jour vos information:</h1>
+	<?php
+	if(isset($retour)){
+	    echo $retour;
+	    echo '<br />';
+	    echo '<br />';
+	}
+	?>
+	<strong>Mail:</strong>
+	<form method="post">
+	    <input type="email" name="mail" <?php if(isset($_SESSION['mail'])){ echo 'value='; echo $_SESSION['mail'];} ?>>
+	    <input type="submit" value="Mettre à jour">
+	</form>
+	<strong>Mot de passe:</strong>
+	<form method="post">
+	    <input type="password" name="mdp">
+	    <input type="password" name="mdpv">
+	    <input type="submit" value="Mettre à jour">
+	</form>
+	
+	
+	<?php
+	include '../structure/photoprofil.php';
+	include '../structure/googlemap/carte.php';
+	
+	?>
+	
+	<strong>Supprimer le compte:</strong>
+	<form method="POST">
+	    <input type="hidden" name="idclient" value="<?php echo $_SESSION['id']; ?>">
+	    <label><input type="submit" name="supcompte" value="Répondre" class="croix" onclick="if (window.confirm('Etes vous sur de vouloir supprimer votre compte? c\'est irévocable')) 
+	    {location.href='default.htm';return true;} else {return false;}">
+	    (Suppression définitive)</label>
+	</form>
+	
+	
+	
+
+    </article>
+
+
+    
+ 
+    <?php include ('../structure/footer.php');?> 
+</div>
+
+</body>
+</html>

@@ -1,0 +1,52 @@
+-- phpMyAdmin SQL Dump
+-- version 3.4.10.1deb1
+-- http://www.phpmyadmin.net
+--
+-- Client: localhost
+-- Généré le : Lun 13 Janvier 2014 à 11:32
+-- Version du serveur: 5.5.34
+-- Version de PHP: 5.5.7-1+sury.org~precise+1
+
+SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+
+--
+-- Base de données: `gchang`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `commentuser`
+--
+
+CREATE TABLE IF NOT EXISTS `commentuser` (
+  `idCommentUser` int(8) NOT NULL AUTO_INCREMENT,
+  `idUserCommentateur` int(8) DEFAULT NULL,
+  `idUserCommente` int(8) NOT NULL,
+  `Commentaire` text COLLATE latin1_bin NOT NULL,
+  PRIMARY KEY (`idCommentUser`),
+  KEY `idUserCommentateur` (`idUserCommentateur`),
+  KEY `idUserCommente` (`idUserCommente`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COLLATE=latin1_bin AUTO_INCREMENT=7 ;
+
+--
+-- Contraintes pour les tables exportées
+--
+
+--
+-- Contraintes pour la table `commentuser`
+--
+ALTER TABLE `commentuser`
+  ADD CONSTRAINT `commentuser_ibfk_1` FOREIGN KEY (`idUserCommentateur`) REFERENCES `client` (`idClient`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `commentuser_ibfk_2` FOREIGN KEY (`idUserCommente`) REFERENCES `client` (`idClient`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

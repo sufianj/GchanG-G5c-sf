@@ -1,0 +1,58 @@
+ 
+<?php 
+
+ 
+include '../structure/connexion_bdd.php'; 
+
+$reponsecat = $bdd->prepare('SELECT * FROM categorie Where idCategorie = ? ');
+$reponsesouscat = $bdd->prepare('SELECT * FROM subcategorie Where idSubCategorie = ? ');
+
+
+?>
+
+
+<h2>Résultat de:</h2>
+                    Recherche pour  
+                        <?php echo "\""; if (isset($_GET["recherche"]))echo $_GET["recherche"]; echo "\""; ?>  </br>
+                    Catégorie: 
+                        <?php if (isset($_GET["categorie"])){
+                            if($_GET["categorie"] == 1){
+                                echo 'TOUT';
+                            }elseif($_GET["categorie"] % 2 ==  1){
+                                
+                                $id = ($_GET["categorie"]-1)/2;
+                                $reponsesouscat->execute(array($id));
+                                $donneessouscat = $reponsesouscat->fetch();
+                                
+                                echo $donneessouscat['NomSubCategorie'];
+                            }elseif($_GET["categorie"] % 2 ==  0){
+                                $id = ($_GET["categorie"]/2);
+                                
+                                $reponsecat->execute(array($id));
+                                $donneescat = $reponsecat->fetch();
+                                
+                                echo $donneescat['NomCategorie'];
+                            }
+                           
+                            
+                            
+                            
+                            
+                        }
+                            ?> </br>
+                    Type d'échanges: 
+                        <?php 
+                        if (isset($_GET["operation"])){$cnt  = 0;
+                            foreach ($_GET["operation"] as $value){
+                                if ($cnt > 0)
+                                    echo ", ";
+                                echo $value;
+                                $cnt++;
+                            }
+                        };
+                    ?> 
+                    
+                    
+                    
+                    
+                    <?php   $reponsesouscat->closeCursor();  ?>

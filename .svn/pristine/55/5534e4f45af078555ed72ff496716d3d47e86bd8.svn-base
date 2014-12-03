@@ -1,0 +1,34 @@
+<!--aside-->
+<aside>
+    <ul>
+        <li>
+            <a href="../pages/compte.php" class="bouton">
+                <div class="boite_bouton">
+                    Mon Compte  
+                </div>                  
+            </a>
+        </li>
+        <li>
+            <a href="../pages/objets.php" class="bouton">
+                <div class="boite_bouton">
+                    Mes Objets  
+                </div>    
+            </a>
+        </li>
+        <li>
+            <a href="../pages/echanges.php" class="bouton">
+                <div class="boite_bouton">
+                    Mes Echanges 
+                </div>     
+            </a>
+        </li>
+        <li>
+            <a href="../pages/recherche.php" class="bouton">
+                <div class="boite_bouton">
+                    Recherche 
+                </div>
+            </a>
+        </li>
+        
+    </ul>
+</aside>

@@ -1,0 +1,268 @@
+<?php
+
+if (isset($_POST['nouvtopic'])) {
+    $pseudo = $_SESSION['pseudo'];
+    $nouvtopic = $_POST['nouvtopic'];
+    $catforum = $_POST['catforum'];
+
+    include '../structure/connexion_bdd.php';
+    $bdd->exec("INSERT INTO conversationforum(Pseudo,TitreConv,TitreCategorieForum) VALUES('$pseudo','$nouvtopic','$catforum')");
+}
+
+if (isset($_POST['nouvmessage'])) {
+    $pseudo = $_SESSION['pseudo'];
+    $nouvmessage = $_POST['nouvmessage'];
+    $idtopicforum = $_POST['topicforum'];
+
+    include '../structure/connexion_bdd.php';
+    $bdd->exec("INSERT INTO messageforum(Pseudo,idConversationForum,Contenu) VALUES('$pseudo','$idtopicforum','$nouvmessage')");
+}
+if (isset($_POST['changestatuttopic'])) {
+    $statuttopic = $_POST['changestatuttopic'];
+    $idtitretropic = $_POST['idtitretopic'];
+
+    include '../structure/connexion_bdd.php';
+    $bdd->exec("UPDATE conversationforum SET StatutTopic='$statuttopic' WHERE idConversationForum='$idtitretropic'");
+}
+if (isset($_POST['supptopic'])) {
+    $idtitretropic = $_POST['idtitretopic'];
+
+    include '../structure/connexion_bdd.php';
+    $bdd->exec("DELETE FROM conversationforum WHERE idConversationForum='$idtitretropic'");
+}
+if (isset($_POST['suppidmessageforum'])) {
+    $idmessageforum = $_POST['suppidmessageforum'];
+
+    include '../structure/connexion_bdd.php';
+    $bdd->exec("DELETE FROM messageforum WHERE idMessageForum='$idmessageforum'");
+}
+
+?>
+
+
+
+
+
+
+<?php
+
+
+include '../structure/connexion_bdd.php';
+$reponse = $bdd->query(' SELECT Titre FROM categorieforum');
+
+
+
+echo '<table>';
+While ($donnees = $reponse->fetch()) {
+    echo '<td><form method="POST"><input type="submit" class="boutoncategories" name="catforum" value="';
+    echo $donnees['Titre'];
+    echo '"/></form></td>';
+}
+echo '</table>';
+$reponse->closeCursor();
+
+$couleurtr = "couleurtr1";
+
+
+
+
+if (isset($_POST['topicforum'])) {
+    echo '<h1 class="titreforum">';
+    echo $_POST['catforum'];
+    echo ' / ';
+    echo $_POST['titretopic'];
+    echo '</h1>';
+
+    
+    
+    include '../structure/connexion_bdd.php';
+    $reponse = $bdd->query("SELECT idConversationForum,Date,Pseudo,Contenu,idMessageForum FROM messageforum WHERE idConversationForum='$_POST[topicforum]' ORDER BY Date DESC");
+
+    
+    
+    echo '<table id="topics"><thead><tr><td>Auteur</td><td class="date">Date</td><td>Message</td></tr></thead>';
+
+    if (isset($_SESSION['pseudo']) && $_POST['statuttopic']!="1") {
+        echo '<tr class="nouvpost"><td>';
+        echo $_SESSION['pseudo'];
+        echo '</td><td>Maintenant</td><td><form method="post"><textarea name="nouvmessage">Nouveau Message</textarea><input type="hidden" name="catforum" value="';
+        echo $_POST['catforum'];
+        echo '"><input type="hidden" name="titretopic" value="';
+        echo $_POST['titretopic'];
+        echo '"><input type="hidden" name="topicforum" value="';
+        echo $_POST['topicforum'];
+        echo '"><input type="hidden" name="statuttopic" value="';
+        echo $_POST['statuttopic'];
+        echo '"><input type="submit" value="Valider"></form></td></tr>';
+    }
+    While ($donnees = $reponse->fetch()) {
+        if($couleurtr == "couleurtr1"){
+            $couleurtr = "couleurtr2";
+        }else{
+            $couleurtr = "couleurtr1";
+        }
+        echo '<tr class=';
+        echo $couleurtr;
+        echo'><td>';
+        echo "<a href=../pages/utilisateurs.php?utilisateur='$donnees[Pseudo]'>";
+	echo $donnees['Pseudo'];
+	echo '<div>';
+	$photopseudo=$donnees['Pseudo'].".jpg";
+	if(file_exists("../../images/objets/$photopseudo")){
+	    echo '<img src="../../images/objets/';
+	    echo $donnees['Pseudo'];
+	    echo '.jpg"  alt="Photo de profil" width="50" height="50">';
+	}else{
+	    echo '<img src="../../images/objets/none.jpg" alt="Photo de profil" width="50" height="50">';
+	}
+	echo '</div>';
+        echo '</a>';
+        echo '</td><td>';
+        echo $donnees['Date'];
+        echo '</td><td>';
+        if ($donnees['Pseudo'] == "Admin") {
+            echo '<font color="red">';
+        }
+        echo $donnees['Contenu'];
+        if ($donnees['Pseudo'] == "Admin") {
+            echo '</font>';
+        }
+        if (isset($_SESSION['id'])){
+                    if ($_SESSION['id']=="1"){
+   
+                        
+                        echo '</td><td>';
+
+                        echo '<form method="post"><input type="hidden" name="catforum" value="';
+                        echo $_POST['catforum'];
+                        echo '"/><input type="hidden" name="titretopic" value="';
+                        echo $_POST['titretopic'];
+                        echo '"/><input type="hidden" name="topicforum" value="';
+                        echo $_POST['topicforum'];
+                        echo '"/><input type="hidden" name="statuttopic" value="';
+                        echo $_POST['statuttopic'];
+                        echo '" /><input type="hidden" name="suppidmessageforum" value="';
+                        echo $donnees['idMessageForum'];
+                        echo '" /><input type="submit" class="croix"/></form> ';
+                    }
+        }
+        echo '</td></tr>';
+    }
+    echo '</table>';
+    
+    
+    
+    
+} elseif (isset($_POST['catforum'])) {
+    echo '<h1 class="titreforum">';
+    echo $_POST['catforum'];
+    echo '</h1>';
+    
+    
+    
+    include '../structure/connexion_bdd.php';
+    $reponse = $bdd->query("SELECT TitreConv,TitreCategorieForum,Pseudo,Date,idConversationForum,StatutTopic FROM conversationforum WHERE TitreCategorieForum='$_POST[catforum]' ORDER BY Date DESC");
+    
+    
+    
+    
+    echo '<table id="topics"><thead><tr><td>Auteur</td><td class="date">Date</td><td>Titre</td></tr></thead>';
+    if (isset($_SESSION['pseudo'])) {
+        echo '<tr class="nouvpost"><td>';
+        echo $_SESSION['pseudo'];
+        echo '</td><td>Maintenant</td><td><form method="post"><textarea name="nouvtopic">Nouveau Topic</textarea><input type="hidden" name="catforum" value="';
+        echo $_POST['catforum'];
+        echo '"><input type="submit" value="Valider"></form></td><td></td></tr>';
+    }
+    While ($donnees = $reponse->fetch()) {
+        if($couleurtr == "couleurtr1"){
+            $couleurtr = "couleurtr2";
+        }else{
+            $couleurtr = "couleurtr1";
+        }
+        echo '<tr class=';
+        echo $couleurtr;
+        echo '><td>';
+        echo "<a href=../pages/utilisateurs.php?utilisateur='$donnees[Pseudo]'>";
+        echo $donnees['Pseudo'];
+	echo '<div>';
+	$photopseudo=$donnees['Pseudo'].".jpg";
+	if(file_exists("../../images/objets/$photopseudo")){
+	    echo '<img src="../../images/objets/';
+	    echo $donnees['Pseudo'];
+	    echo '.jpg"  alt="Photo de profil" width="50" height="50">';
+	}else{
+	    echo '<img src="../../images/objets/none.jpg" alt="Photo de profil" width="50" height="50">';
+	}
+	echo '</div>';
+        echo '</a>';
+        echo '</td><td>';
+        echo $donnees['Date'];
+        echo '</td><td>';
+                if ($donnees['Pseudo'] == "Admin") {
+                    echo '<font color="red">';
+                    echo $donnees['TitreConv'];
+                    echo '</font>';
+                }else{
+                    echo $donnees['TitreConv'];
+                }
+        echo '</td><td>';
+                echo '<form method="post"><input type="hidden" name="titretopic" value="';
+                echo $donnees['TitreConv'];
+                echo '"/><input type="hidden" name="catforum" value="';
+                echo $_POST['catforum'];
+                echo '"/><input type="hidden" name="topicforum" value="';
+                echo $donnees['idConversationForum'];
+                echo '"/><input type="hidden" name="statuttopic" value="';
+                echo $donnees['StatutTopic'];
+                echo'"/><input type="submit" class="goforum"/></form>';
+       
+                
+                
+                if (isset($_SESSION['id'])){
+                    if ($_SESSION['id']=="1"){
+                        echo '</td><td>';
+
+                        echo '<form method="post"><input type="hidden" name="catforum" value="';
+                        echo $_POST['catforum'];
+                        echo '"/><input type="hidden" name="supptopic" value="';
+                        echo $_POST['catforum'];
+                        echo '" /><input type="hidden" name="idtitretopic" value="';
+                        echo $donnees['idConversationForum'];
+                        echo '" /><input type="submit" class="croix"/></form> ';
+                        
+
+                        echo '</td><td>';
+                        if($donnees['StatutTopic']=="1"){
+                            echo '<form method="post"><input type="hidden" name="catforum" value="';
+                            echo $_POST['catforum'];
+                            echo '"/><input type="hidden" name="changestatuttopic" value="';
+                            echo "0";
+                            echo '" /><input type="hidden" name="idtitretopic" value="';
+                            echo $donnees['idConversationForum'];
+                            echo '" /><input type="submit" class="cadenasfer"/></form> ';
+                        }else{
+                            echo '<form method="post"><input type="hidden" name="catforum" value="';
+                            echo $_POST['catforum'];
+                            echo '"/><input type="hidden" name="changestatuttopic" value="';
+                            echo "1";
+                            echo '" /><input type="hidden" name="idtitretopic" value="';
+                            echo $donnees['idConversationForum'];
+                            echo '" /><input type="submit" class="cadenasouv"/></form> ';
+                        }
+                        
+                    }
+                }
+                
+                
+                
+        echo '</td></tr>';
+    }
+    echo '</table>';
+}
+
+
+
+
+$reponse->closeCursor();
+?>

@@ -1,0 +1,43 @@
+<?php
+
+if(isset($_POST['pseudo']) && isset($_POST['mdp'])){ 
+    include '../structure/connexion_bdd.php';
+    $reponse = $bdd->query("SELECT idClient,Pseudo,NomUtilisateur,PrenomUtilisateur,Pwd FROM client WHERE Pseudo='$_POST[pseudo]'");
+    $donnees = $reponse->fetch();
+    if($_POST['mdp']== $donnees['Pwd']){
+        $_SESSION['id'] = $donnees['idClient'];
+        $_SESSION['pseudo'] = $donnees['Pseudo'];
+        $_SESSION['nom'] = $donnees['NomUtilisateur'];
+        $_SESSION['prenom'] = $donnees['PrenomUtilisateur'];
+    }
+}
+
+if(isset($_SESSION['id'])){
+    if($_SESSION['id']=="1"){echo $_SESSION['id'];
+        print("<script type=\"text/javascript\">setTimeout('location=(\"../pageadmin/accueil.php\")' ,0);</script>");
+    }
+}
+if(isset($_SESSION['nom']) && isset($_SESSION['prenom'])){
+    
+    echo $_SESSION['prenom'];
+    echo ' ';
+    echo $_SESSION['nom'];
+    echo '<br />';
+    echo '<a href="../structure/deconnexion.php">Déconnexion</a>';
+
+    
+    
+}else{
+echo '
+<form method="post">
+    <label for="pseudo">Votre pseudo</label> : </br>
+    <input type="text" name="pseudo"/></br>
+    <label for="mdp">Votre mot de passe</label> : </br>
+    <input type="password" name="mdp"/>
+    <input type="submit" class="go" /></br>
+    <a href="accueil.php?page=10">Inscription</a> / <a href="accueil.php?page=11">Mot de passe oublié</a>
+
+</form>
+        ';
+}
+?>

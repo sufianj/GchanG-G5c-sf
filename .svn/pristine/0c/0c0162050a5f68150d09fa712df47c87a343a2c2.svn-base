@@ -1,0 +1,73 @@
+<?php 
+    session_start();
+    $page='utilisateur';
+    if(!isset($_GET['utilisateur'])){
+         print("<script type=\"text/javascript\">setTimeout('location=(\"../pages/accueil.php\")' ,0);</script>");
+    }
+?>
+<!DOCTYPE HTML>
+
+
+<html>
+	<head>
+                <meta charset="utf-8" />
+                <link rel="stylesheet" href="stylepages.css" />
+                <link rel="stylesheet" href="../structure/stylestructure.css" />
+                <link rel="icon" type="images/png" href="../../images/favicone.png">
+                <title>GchanG</title>
+	</head>
+        
+        
+        
+<body>
+    
+<div id="page">
+    
+    <?php include ('../structure/header.php');?>
+    
+    <?php include ('../structure/nav.php');?>
+    
+    <?php include ('../structure/aside.php');?>
+    
+    <!--corps-->
+    <article>
+
+
+        <?php
+        include '../structure/connexion_bdd.php';
+        
+        $reponse = $bdd->query("SELECT idClient,Pseudo,NomUtilisateur,PrenomUtilisateur,Sexe,DateNaissance,DateInscription FROM client WHERE Pseudo=$_GET[utilisateur];");
+        $donnees = $reponse->fetch();
+        echo 'Pseudo: ';
+        echo $donnees['Pseudo'];
+        echo '<br />';
+        echo 'Nom: ';
+        echo $donnees['NomUtilisateur'];
+        echo '<br />';
+        echo 'Prenom: ';
+        echo $donnees['PrenomUtilisateur'];
+        echo '<br />';
+        echo 'Sexe: ';
+        echo $donnees['Sexe'];
+        echo '<br />';
+        echo 'Date de naissance: ';
+        echo $donnees['DateNaissance'];
+        echo '<br />';
+        echo 'Date dinscription: ';
+        echo $donnees['DateInscription'];
+        
+        
+        ?>
+        
+        
+
+    </article>
+
+
+    
+ 
+    <?php include ('../structure/footer.php');?> 
+</div>
+
+</body>
+</html>

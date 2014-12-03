@@ -1,0 +1,6 @@
+<?php
+<<<<<<< .mine
+    $bdd = new PDO('mysql:host=localhost;dbname=gchang', 'root', 'isep'); 
+?>=======
+    $bdd = new PDO('mysql:host=localhost;dbname=gchangvide', 'root', '');
+    ?>>>>>>>> .r202

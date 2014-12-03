@@ -1,0 +1,98 @@
+<?php 
+	session_start(); 
+        $page = 'reinitialiser_mdp';
+?> 
+<!DOCTYPE HTML>
+<html>
+	<head>
+                <meta charset="utf-8" />
+                <link rel="stylesheet" href="stylepages.css" />
+                <link rel="stylesheet" href="../structure/stylestructure.css" />
+                <link rel="icon" type="images/png" href="../../images/favicone.png">
+                <title>GchanG</title>
+	</head>
+        
+        
+<body>
+
+<div id="page">
+    
+    <?php include ('../structure/header.php');?>
+    
+    <?php include ('../structure/nav.php');?>
+    
+    <?php include ('../structure/aside.php');?>
+    
+    <!--corps-->
+    <article>
+    <?php 
+ /*test     
+        $email = $_POST['email'];
+        include '../structure/connexion_bdd.php';
+                $reponse = $bdd->query("SELECT Pwd, Pseudo FROM client WHERE AdresseMail='$email'");
+        if($donnees = $reponse->fetch()){
+                        $pseudocorrect=1;
+                    include '../structure/SendMail/class.g5cmailer.php';
+                    $msg = "mot de passe: ".$donnees['Pwd'];
+                    mail_to($email, $donnees['Pseudo'], $msg);
+                }
+          $reponse->closeCursor(); 
+ */
+        //verification
+        if(empty($_SESSION['6_letters_code'] ) ||
+                strcasecmp($_SESSION['6_letters_code'], $_POST['6_letters_code']) != 0)
+        { 
+               // $msg="Code erreur!";
+                echo '<script language="javascript">alert("Code erreur");</script>';
+        }else{
+               // $msg="Code bon.";
+        //todo: verification success
+                $email = $_POST['email'];
+
+                $emailexist = 0;
+                include '../structure/connexion_bdd.php';
+                $reponse = $bdd->query("SELECT Pwd, Pseudo FROM client WHERE AdresseMail='$email'");
+                $pseudocorrect=0;
+
+                if($donnees = $reponse->fetch()){
+                   //     echo 'mot de passse: ';
+                   //     echo $donnees['Pwd'];
+                    $pseudocorrect=1;
+                    include '../structure/SendMail/class.g5cmailer.php';
+                    $mail_body = "<br />Votre mot de passe est: ".$donnees['Pwd'];
+                   
+                    mail_to($email, $donnees['Pseudo'], $mail_body, 'mot de passe');
+                    
+                }
+                if($pseudocorrect==0){
+                    echo '<script language="javascript">alert("Votre adresse n\'a pas de corespondance");</script>';
+                }
+                $reponse->closeCursor(); 
+                
+            }
+            /*
+        //test
+        echo "<p>Session code:</p>";
+        $str = $_SESSION['6_letters_code'];
+        echo "<p>$str</p>";
+        echo "<p>your code:</p>";
+        $str = $_POST['6_letters_code'];
+        echo "<p>$str</p>";
+        echo "<p>$msg</p>";
+             * *?
+             */
+        
+        
+        
+    ?>   
+       
+</article> 
+
+
+    
+ 
+    <?php include ("../structure/footer.php");?> 
+</div>
+
+</body>
+</html>

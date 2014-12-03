@@ -1,0 +1,78 @@
+<?php 
+    session_start();
+    $page='objet';
+?>
+<!DOCTYPE HTML>
+<html>
+	<head>
+                <meta charset="utf-8" />
+                <link rel="stylesheet" href="stylepages.css" />
+                <link rel="stylesheet" href="../structure/stylestructure.css" /> 
+                <link rel="icon" type="images/png" href="../../images/favicone.png">
+                <title>GchanG</title>
+	</head>
+        
+        
+<body>
+    
+<div id="page">
+    
+    <?php include ('../structure/header.php');?>
+    
+    <?php include ('../structure/nav.php');?>
+    
+    <?php include ('../structure/aside.php');?>
+    
+    <!--corps-->
+    <article>
+
+
+        <?php
+        include '../structure/connexion_bdd.php';
+
+        echo '<br />';
+        $resultats = $bdd->query("SELECT * FROM objet WHERE idObjet='$_GET[id]'");
+        while ($donnees = $resultats->fetch()){
+     
+		echo '<a href="../pages/objet.php?id=';
+		echo $donnees['idObjet'];
+		echo "\">";
+		echo '<table class="resultatrech"><tr><td></td><td><h1 style ="font-size:20px">';
+		echo $donnees['TitreObjet'];
+		echo '</h1></td></tr><tr><td class="image"><img src="../../images/objets/';
+                echo $donnees['idObjet'];
+		echo '.jpg"  alt="Objet" width="100" height="100"></td><td style ="font-size:15px">Description : ';
+                echo $donnees['DescriptionObjet'];
+		echo '<br /> Type d\'opération : ';
+		echo $donnees['TypeOperation'];
+		echo '<br /> Propriétaire : ';
+		echo "<a href=../pages/utilisateurs.php?utilisateur='$donnees[PseudoProprio]'>";
+		echo $donnees['PseudoProprio'];
+		echo '</a>';	
+		echo '</td></tr></table>';
+		echo '</a>';
+		echo '<br /><br />';
+		
+        }
+        ?>
+	
+	
+	
+	
+	<form>
+	    <textarea rows="5" cols="80"></textarea>
+	    <br>
+	    <input type="submit" value="Postuler pour un echange" class="petit_bouton">
+	    
+	</form>
+
+    </article>
+
+
+    
+ 
+    <?php include ('../structure/footer.php');?> 
+</div>
+
+</body>
+</html>

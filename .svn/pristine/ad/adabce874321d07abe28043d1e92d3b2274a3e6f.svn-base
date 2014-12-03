@@ -1,0 +1,34 @@
+<?php
+
+function pseudoexistant($pseudo){
+    if($pseudo=='coucou'){
+        echo '<img src="../../images/vrai.png" alt="Vrai" class="image_validation" />';
+    }else{
+        echo '<img src="../../images/faux.png" alt="Faux" class="image_validation" />';
+    }
+}
+
+function mailexistant($mail){
+    if($mail=='coucou@coucou'){
+        echo '<img src="../../images/vrai.png" alt="Vrai" class="image_validation" />';
+    }else{
+        echo '<img src="../../images/faux.png" alt="Faux" class="image_validation" />';
+    }
+}
+
+function mdpcorrect($mdp){
+    if($mdp=='coucou'){
+        echo '<img src="../../images/vrai.png" alt="Vrai" class="image_validation" />';
+    }else{
+        echo '<img src="../../images/faux.png" alt="Faux" class="image_validation" />';
+    }    
+}
+
+function mdpegal($mdpa,$mdpb){
+    if($mdpa==$mdpb){
+        echo '<img src="../../images/vrai.png" alt="Vrai" class="image_validation" />';
+    }else{
+        echo '<img src="../../images/faux.png" alt="Faux" class="image_validation" />';
+    }    
+}
+

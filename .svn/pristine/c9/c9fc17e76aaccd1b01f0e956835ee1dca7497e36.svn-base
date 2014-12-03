@@ -1,0 +1,50 @@
+<?php 
+    session_start();
+    $page='quisommesnous';
+?>
+<!DOCTYPE HTML>
+<html>
+	<head>
+                <meta charset="utf-8" />
+                <link rel="stylesheet" href="stylepages.css" />
+                <link rel="stylesheet" href="../structure/stylestructure.css" />
+                <title>GchanG</title>
+	</head>
+        
+        
+<body>
+    
+<div id="page">
+    
+    <?php include ('../structure/header.php');?>
+    
+    <?php include ('../structure/nav.php');?>
+    
+    <?php include ('../structure/aside.php');?>
+    
+    <!--corps-->
+    <article>
+
+
+        <h1>Qui sommes-nous?</h1> <br />
+        
+        <p>Gchang.com est un site de petites annonces qui part d'une idée simple : mettre en contact les vendeurs, donneurs, échangeur, troqueur et, les personnes désirant faire de bonnes affaires.
+           
+        <p>Sur Gchang.com, déposer une annonce vous prendra 2 minutes. Vous choisissez le type de transaction parmis don, troc, prêt et location. Sélectionnez une catégorie puis saisissez le texte de votre annonce. 
+        <p>Remplissez le formulaire d'inscription afin d'être informé de l'état de vos annonces et clients potentiels: c'est simple, efficace et en plus totalement gratuit.
+        <p>Gchang.com est un site généraliste. Vous pouvez déposer des annonces dans de nombreuses catégories. 
+        <p>Pour plus d'informations, vous pouvez également consulter la listes des questions / réponses sur le <a href="../pages/forum.php">forum</a>. <br />
+
+        <p>A bientôt sur gchang.com <br />
+        <p>Cordialement,
+        <p>L'équipe Gchang
+    </article>
+
+
+    
+ 
+    <?php include ('../structure/footer.php');?> 
+</div>
+
+</body>
+</html>

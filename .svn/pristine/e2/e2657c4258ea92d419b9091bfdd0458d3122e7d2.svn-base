@@ -1,0 +1,259 @@
+<?php 
+    session_start();
+    $page='inscription';
+    ?>
+<!DOCTYPE HTML>
+<html>
+	<head>
+                <meta charset="utf-8" />
+                <link rel="stylesheet" href="stylepages.css" />
+                <link rel="stylesheet" href="../structure/stylestructure.css" />
+                <title>GchanG</title>
+	</head>
+        
+        
+<body>
+
+<?php include ('../structure/fonctionsinscription.php'); ?>  
+    
+
+<div id="page">
+    
+    <?php include ('../structure/header.php');?>
+    
+    <?php include ('../structure/nav.php');?>
+    
+    <?php include ('../structure/aside.php');?>
+    
+    <!--corps-->
+    <article>
+        <form id="inscription" method='post'>
+        <table>
+            <tr>
+                <td>
+                    <strong>Identification</strong>
+                </td>
+                <td>
+                    
+                </td>
+                <td>
+                    
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Pseudo * :	
+                </td>
+                <td>
+                    <input type="text" name="pseudo" required  <?php if(isset($_POST['pseudo'])){ echo 'value='; echo $_POST['pseudo'];} ?> >
+                </td>
+                <td>
+                    <?php
+                    if(isset($_POST['pseudo'])){
+                    pseudoexistant($_POST['pseudo']);
+                    }
+                    ?>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Adresse mail * :
+                </td>
+                <td>
+                    <input type="email" name="email" required <?php if(isset($_POST['email'])){ echo 'value='; echo $_POST['email'];} ?> >
+                </td>
+                <td>
+                    <?php
+                    if(isset($_POST['email'])){
+                    mailexistant($_POST['email']);
+                    }
+                    ?>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Mot de passe * :
+                </td>
+                <td>
+                    <input type="password" name="mdp" required <?php if(isset($_POST['mdp'])){ echo 'value='; echo $_POST['mdp'];} ?>>
+                </td>
+                <td>
+                    <?php
+                    if(isset($_POST['mdp'])){
+                    mdpcorrect($_POST['mdp']);
+                    }
+                    ?>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Vérification du mot de passe * :
+                </td>
+                <td>
+                    <input type="password" name="mdpv" required <?php if(isset($_POST['mdpv'])){ echo 'value='; echo $_POST['mdpv'];} ?>>
+                </td>
+                <td>
+                    <?php
+                    if(isset($_POST['mdpv']) && isset($_POST['mdp'])){
+                    mdpegal($_POST['mdp'],$_POST['mdpv']);
+                    }
+                    ?> 
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <strong>Etat civil</strong>
+                </td>
+                <td>
+                    
+                </td>
+                <td>
+                    
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Nom * : 
+                </td>
+                <td>
+                    <input type="text" name="nom" required <?php if(isset($_POST['nom'])){ echo 'value='; echo $_POST['nom'];} ?>>
+                </td>
+                <td>
+                    
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Prenom: 
+                </td>
+                <td>
+                    <input type="text" name="prenom" <?php if(isset($_POST['prenom'])){ echo 'value='; echo $_POST['prenom'];} ?>>
+                </td>
+                <td>
+                    
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Sexe: 
+                </td>
+                <td>
+                    <input type="radio" name="sexe" value="masculin" <?php if(isset($_POST['sexe'])){if($_POST['sexe'] == 'masculin'){ echo 'checked';}} ?> > Masculin
+                    <input type="radio" name="sexe" value="feminin"  <?php if(isset($_POST['sexe'])){if($_POST['sexe'] == 'feminin'){ echo 'checked';}} ?> > Féminin 
+                </td>
+                <td>
+                    
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Date de naissance: 
+                </td>
+                <td>
+                    <input type="date" name="naissance" <?php if(isset($_POST['naissance'])){ echo 'value='; echo $_POST['naissance'];} ?> >
+                </td>
+                <td>
+                    
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <strong>Adresse postale</strong>
+                </td>
+                <td>
+                    
+                </td>
+                <td>
+                    
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    N°: 
+                </td>
+                <td>
+                    <input type="text" name="numrue" <?php if(isset($_POST['numrue'])){ echo 'value='; echo $_POST['numrue'];} ?>>
+	        </td>
+                <td>
+                    
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Rue:
+                </td>
+                <td>
+                    <input type="text" name="nomrue" <?php if(isset($_POST['nomrue'])){ echo 'value='; echo $_POST['nomrue'];} ?> >
+                </td>
+                <td>
+                    
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Code Postal:
+                </td>
+                <td>
+                    <input type="text" name="cp" <?php if(isset($_POST['cp'])){ echo 'value='; echo $_POST['cp'];} ?> >
+                </td>
+                <td>
+                    
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Ville:
+                </td>
+                <td>
+                    <input type="text" name="ville" <?php if(isset($_POST['ville'])){ echo 'value='; echo $_POST['ville'];} ?> >
+                </td>
+                <td>
+                    
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Pays:
+                </td>
+                <td>
+                    <select name="pays"> 
+                            <optgroup label="Europe">
+                                    <option value="france" <?php if(isset($_POST['pays']) && $_POST['pays'] == 'france') echo 'selected'; ?>>France</option>
+                                    <option value="espagne" <?php if(isset($_POST['pays']) && $_POST['pays'] == 'espagne') echo 'selected'; ?>>Espagne</option>
+                            </optgroup>							
+                            <optgroup label="Amérique">
+                                    <option value="us" <?php if(isset($_POST['pays']) && $_POST['pays'] == 'us') echo 'selected'; ?> >Etats Unis</option>
+                                    <option value="bresil" <?php if(isset($_POST['pays']) && $_POST['pays'] == 'bresil') echo 'selected'; ?>>Brésil</option>
+                                    <option value="argentine" <?php if(isset($_POST['pays']) && $_POST['pays'] == 'argentine') echo 'selected'; ?>>Argentine</option>
+                            </optgroup>
+                    </select>
+                </td>
+                <td>
+                    
+                </td>
+            </tr>
+     
+        </table>
+        <br />
+        <input type="checkbox" name="conditions" value="conditions" id="CGU">Je confirme avoir lu et accepter les <a href="cgu.php">conditions générales d'utilisation</a>
+        <br />
+        <br />
+        <input type="submit" name="valider" value="Valider">
+        </form>   
+        
+        
+
+        
+        
+        
+        
+    </article>
+
+
+    
+ 
+    <?php include ('../structure/footer.php');?> 
+</div>
+
+</body>
+</html>

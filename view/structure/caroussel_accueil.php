@@ -1,0 +1,366 @@
+<script type='text/javascript'>
+function ShowImage(page, tag)
+{
+    var i = 1;
+    var el;
+    while (el = document.getElementById(tag + i)) {
+        if (i == page)
+            el.style.display = 'block';
+        else
+            el.style.display = 'none';
+        i++;
+    }
+}
+</script>   
+
+
+<?php
+
+include '../structure/connexion_bdd.php';
+$reponse = $bdd->query("SELECT * FROM objet ORDER BY idObjet DESC LIMIT 4 ;");
+while($donnees = $reponse->fetch()){
+    $choix1['titre'][]=$donnees['TitreObjet'];
+    $choix1['id'][]=$donnees['idObjet'];   
+}
+$reponse->closecursor();
+include '../structure/connexion_bdd.php';
+$reponse = $bdd->query("SELECT * FROM objet WHERE TypeOperation =  'Don' ORDER BY idObjet DESC LIMIT 4;");
+while($donnees = $reponse->fetch()){
+    $choix2['titre'][]=$donnees['TitreObjet'];
+    $choix2['id'][]=$donnees['idObjet'];
+}
+$reponse->closecursor();
+include '../structure/connexion_bdd.php';
+$reponse = $bdd->query("SELECT * FROM objet WHERE TypeOperation =  'Location' ORDER BY idObjet DESC LIMIT 4;");
+while($donnees = $reponse->fetch()){
+    $choix3['titre'][]=$donnees['TitreObjet'];
+    $choix3['id'][]=$donnees['idObjet'];
+}
+$reponse->closecursor();
+include '../structure/connexion_bdd.php';
+$reponse = $bdd->query("SELECT * FROM objet WHERE TypeOperation =  'Troc' ORDER BY idObjet DESC LIMIT 4;");
+while($donnees = $reponse->fetch()){
+    $choix4['titre'][]=$donnees['TitreObjet'];
+    $choix4['id'][]=$donnees['idObjet'];
+}
+$reponse->closecursor();
+
+for($i=0; $i<=3; $i++){
+$choi1['id'][$i] = $choix1['id'][$i];
+$choi2['id'][$i]=$choix2['id'][$i];
+$choi3['id'][$i]=$choix3['id'][$i];
+$choi4['id'][$i]=$choix4['id'][$i];
+
+}
+
+
+for($i=0; $i<=3; $i++){
+$choix1['id'][$i] = $choix1['id'][$i].".jpg";
+$choix2['id'][$i]=$choix2['id'][$i].".jpg";
+$choix3['id'][$i]=$choix3['id'][$i].".jpg";
+$choix4['id'][$i]=$choix4['id'][$i].".jpg";
+
+}
+
+?>
+
+
+
+
+
+
+
+<table id="tableau_categorie_accueil">
+    <tr>
+        <td id="tableau_caroussel_bouton">
+            <form method="post" action="traitement.php">
+
+<!-- j'ai changè les valeurs des input pour js -->
+                <input type="radio" name="categorie" value="1" id="cat1"  onchange="ShowImage(parseInt(this.value), 'categorie');" checked=""/> <label for="cat1">Ajout récents</label><br/>
+                <input type="radio" name="categorie" value="2" id="cat2"  onchange="ShowImage(parseInt(this.value), 'categorie');"/> <label for="cat2">Don</label><br/>
+                <input type="radio" name="categorie" value="3" id="cat3"  onchange="ShowImage(parseInt(this.value), 'categorie');"/> <label for="cat3">Troc</label><br/>
+                <input type="radio" name="categorie" value="4" id="cat4"  onchange="ShowImage(parseInt(this.value), 'categorie');"/> <label for="cat4">Location</label>
+
+            </form>
+        </td>
+        <td>
+            <!-- On va telecharger les images par php plus tard-->
+            <div style="display:block" id="categorie1">
+              <table><tr>
+               <td class="tableau_caroussel">
+                   <a href="objet.php?id=<?php echo $choi1['id'][0];?>">
+                      
+                   <h2><?php echo $choix1['titre'][0]; ?></h2>
+                   
+		   <?php
+		   $choix1t=$choix1['id'][0];
+		   if(file_exists("../../images/objets/$choix1t")){
+			echo '<img src="../../images/objets/';
+			echo $choix1['id'][0];
+			echo '"  alt="objet 1" class="objet" >';
+		    }else{
+			echo '<img src="../../images/objets/none.jpg" alt="Photo de profil" class="objet">';
+		    }
+		   
+		   ?>
+		   <br/>
+                   </a>
+               </td>
+               <td class="tableau_caroussel">
+                   <a href="objet.php?id=<?php echo $choi1['id'][1];?>">
+                   <h2><?php echo $choix1['titre'][1]; ?></h2>
+                   <?php
+		   $choix1t=$choix1['id'][1];
+		   if(file_exists("../../images/objets/$choix1t")){
+			echo '<img src="../../images/objets/';
+			echo $choix1['id'][1];
+			echo '"  alt="objet 2" class="objet">';
+		    }else{
+			echo '<img src="../../images/objets/none.jpg" alt="objet 2" class="objet">';
+		    }
+		   
+		   ?>
+		   <br/>
+               </td>
+               <td class="tableau_caroussel">
+                   <a href="objet.php?id=<?php echo $choi1['id'][2];?>">
+                   <h2><?php echo $choix1['titre'][2]; ?></h2>
+                   <?php
+		   $choix1t=$choix1['id'][2];
+		   if(file_exists("../../images/objets/$choix1t")){
+			echo '<img src="../../images/objets/';
+			echo $choix1['id'][2];
+			echo '" alt="objet 3" class="objet">';
+		    }else{
+			echo '<img src="../../images/objets/none.jpg" alt="objet 3" class="objet">';
+		    }
+		   
+		   ?><br/>
+               </td>
+               <td class="tableau_caroussel">
+                   <a href="objet.php?id=<?php echo $choi1['id'][3];?>">
+                   <h2><?php echo $choix1['titre'][3]; ?></h2>
+                   <?php
+		   $choix1t=$choix1['id'][3];
+		   if(file_exists("../../images/objets/$choix1t")){
+			echo '<img src="../../images/objets/';
+			echo $choix1['id'][3];
+			echo '" alt="objet 4" class="objet">';
+		    }else{
+			echo '<img src="../../images/objets/none.jpg" alt="Photo de profil" alt="objet 4" class="objet">';
+		    }
+		   
+		   ?><br/>
+               </td>
+               </tr>
+	      </table>
+             </div>
+    
+             <div style="display:none" id="categorie2">
+                <table><tr>
+               <td class="tableau_caroussel">
+                   <a href="objet.php?id=<?php echo $choi2['id'][0];?>">
+                   <h2><?php echo $choix2['titre'][0]; ?></h2>
+                   
+		   <?php
+		   $choix2t=$choix2['id'][0];
+		   if(file_exists("../../images/objets/$choix2t")){
+			echo '<img src="../../images/objets/';
+			echo $choix2['id'][0];
+			echo '"  alt="objet 1" class="objet" >';
+		    }else{
+			echo '<img src="../../images/objets/none.jpg" alt="Photo de profil" class="objet">';
+		    }
+		   
+		   ?>
+		   <br/>	
+               </td>
+               <td class="tableau_caroussel">
+                   <a href="objet.php?id=<?php echo $choi2['id'][1];?>">
+                   <h2><?php echo $choix2['titre'][1]; ?></h2>
+                   <?php
+		   $choix2t=$choix2['id'][1];
+		   if(file_exists("../../images/objets/$choix2t")){
+			echo '<img src="../../images/objets/';
+			echo $choix2['id'][1];
+			echo '"  alt="objet 2" class="objet">';
+		    }else{
+			echo '<img src="../../images/objets/none.jpg" alt="objet 2" class="objet">';
+		    }
+		   
+		   ?>
+		   <br/>
+               </td>
+               <td class="tableau_caroussel">
+                   <a href="objet.php?id=<?php echo $choi2['id'][2];?>">
+                   <h2><?php echo $choix2['titre'][2]; ?></h2>
+                   <?php
+		   $choix2t=$choix2['id'][2];
+		   if(file_exists("../../images/objets/$choix2t")){
+			echo '<img src="../../images/objets/';
+			echo $choix2['id'][2];
+			echo '" alt="objet 3" class="objet">';
+		    }else{
+			echo '<img src="../../images/objets/none.jpg" alt="objet 3" class="objet">';
+		    }
+		   
+		   ?><br/>
+               </td>
+               <td class="tableau_caroussel">
+                   <a href="objet.php?id=<?php echo $choi2['id'][3];?>">
+                   <h2><?php echo $choix2['titre'][3]; ?></h2>
+                   <?php
+		   $choix2t=$choix2['id'][3];
+		   if(file_exists("../../images/objets/$choix2t")){
+			echo '<img src="../../images/objets/';
+			echo $choix2['id'][3];
+			echo '" alt="objet 4" class="objet">';
+		    }else{
+			echo '<img src="../../images/objets/none.jpg" alt="Photo de profil" alt="objet 4" class="objet">';
+		    }
+		   
+		   ?><br/>
+               </td>
+               </tr>
+	      </table>
+             </div>
+    
+             <div style="display:none" id="categorie3">
+                <table><tr>
+               <td class="tableau_caroussel">
+                   <a href="objet.php?id=<?php echo $choi4['id'][0];?>">
+                   <h2><?php echo $choix4['titre'][0]; ?></h2>
+		   <?php
+		   $choix4t=$choix4['id'][0];
+		   if(file_exists("../../images/objets/$choix4t")){
+			echo '<img src="../../images/objets/';
+			echo $choix4['id'][0];
+			echo '"  alt="objet 1" class="objet" >';
+		    }else{
+			echo '<img src="../../images/objets/none.jpg" alt="Photo de profil" class="objet">';
+		    }
+		   
+		   ?>
+		   <br/>	
+               </td>
+               <td class="tableau_caroussel">
+                   <a href="objet.php?id=<?php echo $choi4['id'][1];?>">
+                   <h2><?php echo $choix4['titre'][1]; ?></h2>
+                   <?php
+		   $choix4t=$choix4['id'][1];
+		   if(file_exists("../../images/objets/$choix4t")){
+			echo '<img src="../../images/objets/';
+			echo $choix4['id'][1];
+			echo '"  alt="objet 2" class="objet">';
+		    }else{
+			echo '<img src="../../images/objets/none.jpg" alt="objet 2" class="objet">';
+		    }
+		   
+		   ?>
+		   <br/>
+               </td>
+               <td class="tableau_caroussel">
+                   <a href="objet.php?id=<?php echo $choi4['id'][2];?>">
+                   <h2><?php echo $choix4['titre'][2]; ?></h2>
+                   <?php
+		   $choix4t=$choix4['id'][2];
+		   if(file_exists("../../images/objets/$choix4t")){
+			echo '<img src="../../images/objets/';
+			echo $choix4['id'][2];
+			echo '" alt="objet 3" class="objet">';
+		    }else{
+			echo '<img src="../../images/objets/none.jpg" alt="objet 3" class="objet">';
+		    }
+		   
+		   ?><br/>
+               </td>
+               <td class="tableau_caroussel">
+                   <a href="objet.php?id=<?php echo $choi4['id'][3];?>">
+                   <h2><?php echo $choix4['titre'][3]; ?></h2>
+                   <?php
+		   $choix4t=$choix4['id'][3];
+		   if(file_exists("../../images/objets/$choix4t")){
+			echo '<img src="../../images/objets/';
+			echo $choix4['id'][3];
+			echo '" alt="objet 4" class="objet">';
+		    }else{
+			echo '<img src="../../images/objets/none.jpg" alt="Photo de profil" alt="objet 4" class="objet">';
+		    }
+		   
+		   ?><br/>
+               </td>
+               </tr>
+	      </table>
+             </div>
+    
+             <div style="display:none" id="categorie4">
+                <table><tr>
+               <td class="tableau_caroussel">
+                   <a href="objet.php?id=<?php echo $choi3['id'][0];?>">
+                   <h2><?php echo $choix3['titre'][0]; ?></h2>
+		   <?php
+		   $choix3t=$choix3['id'][0];
+		   if(file_exists("../../images/objets/$choix3t")){
+			echo '<img src="../../images/objets/';
+			echo $choix3['id'][0];
+			echo '"  alt="objet 1" class="objet" >';
+		    }else{
+			echo '<img src="../../images/objets/none.jpg" alt="Photo de profil" class="objet">';
+		    }
+		   
+		   ?>
+		   <br/>	
+               </td>
+               <td class="tableau_caroussel">
+                   <a href="objet.php?id=<?php echo $choi3['id'][1];?>">
+                   <h2><?php echo $choix3['titre'][1]; ?></h2>
+                   <?php
+		   $choix3t=$choix3['id'][1];
+		   if(file_exists("../../images/objets/$choix3t")){
+			echo '<img src="../../images/objets/';
+			echo $choix3['id'][1];
+			echo '"  alt="objet 2" class="objet">';
+		    }else{
+			echo '<img src="../../images/objets/none.jpg" alt="objet 2" class="objet">';
+		    }
+		   
+		   ?>
+		   <br/>
+               </td>
+               <td class="tableau_caroussel">
+                   <a href="objet.php?id=<?php echo $choi3['id'][2];?>">
+                   <h2><?php echo $choix3['titre'][2]; ?></h2>
+                   <?php
+		   $choix3t=$choix3['id'][2];
+		   if(file_exists("../../images/objets/$choix3t")){
+			echo '<img src="../../images/objets/';
+			echo $choix3['id'][2];
+			echo '" alt="objet 3" class="objet">';
+		    }else{
+			echo '<img src="../../images/objets/none.jpg" alt="objet 3" class="objet">';
+		    }
+		   
+		   ?><br/>
+               </td>
+               <td class="tableau_caroussel">
+                   <a href="objet.php?id=<?php echo $choi3['id'][3];?>">
+                   <h2><?php echo $choix3['titre'][3]; ?></h2>
+                   <?php
+		   $choix3t=$choix3['id'][3];
+		   if(file_exists("../../images/objets/$choix3t")){
+			echo '<img src="../../images/objets/';
+			echo $choix3['id'][3];
+			echo '" alt="objet 4" class="objet">';
+		    }else{
+			echo '<img src="../../images/objets/none.jpg" alt="Photo de profil" alt="objet 4" class="objet">';
+		    }
+		   
+		   ?><br/>
+               </td>
+               </tr>
+	      </table>
+             </div>
+        </td>
+    </tr>
+
+</table>

@@ -1,0 +1,216 @@
+<?php 
+    session_start();
+    $page='inscription';
+    
+    if(!isset($_SESSION['id'])){
+         print("<script type=\"text/javascript\">setTimeout('location=(\"../pages/accueil.php\")' ,0);</script>");
+    }
+    ?>
+<!DOCTYPE HTML>
+<html>
+	<head>
+                <meta charset="utf-8" />
+                <link rel="stylesheet" href="stylepages.css" />
+                <link rel="stylesheet" href="../structure/stylestructure.css" />
+                <link rel="icon" type="images/png" href="../../images/favicone.png">
+                <title>GchanG</title>
+	</head>
+        
+        
+<body>
+
+<?php include ('../structure/fonctionsinscription.php'); ?>  
+    
+
+<div id="page">
+    
+    <?php include ('../structure/header.php');?>
+    
+    <?php include ('../structure/nav.php');?>
+    
+    <?php include ('../structure/aside.php');?>
+    
+    
+    
+
+
+    <!--corps-->
+    <article>
+                
+        
+        
+        <form id="inscription" method='post'>
+        <table>
+            <tr>
+                <td>
+                    <strong>Identification</strong>
+                </td>
+                <td>
+                    
+                </td>
+                <td>
+                    
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Pseudo * :	
+                </td>
+                <td>
+                    <input type="text" name="pseudo" required  <?php if(isset($_POST['pseudo'])){ echo 'value='; echo $_POST['pseudo'];} ?> >
+                </td>
+                <td>
+                    <?php
+                    if(isset($_POST['pseudo'])){
+                    pseudoexistant($_POST['pseudo']);
+                    
+                    }
+                    ?>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Adresse mail * :
+                </td>
+                <td>
+                    <input type="email" name="email" required <?php if(isset($_POST['email'])){ echo 'value='; echo $_POST['email'];} ?> >
+                </td>
+                <td>
+                    <?php
+                    if(isset($_POST['email'])){
+                    mailexistant($_POST['email']);
+                    }
+                    ?>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Mot de passe * :
+                </td>
+                <td>
+                    <input type="password" name="mdp" required <?php if(isset($_POST['mdp'])){ echo 'value='; echo $_POST['mdp'];} ?>>
+                </td>
+                <td>
+                    <?php
+                    if(isset($_POST['mdp'])){
+                    mdpcorrect($_POST['mdp']);
+                    }
+                    ?>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Vérification du mot de passe * :
+                </td>
+                <td>
+                    <input type="password" name="mdpv" required <?php if(isset($_POST['mdpv'])){ echo 'value='; echo $_POST['mdpv'];} ?>>
+                </td>
+                <td>
+                    <?php
+                    if(isset($_POST['mdpv']) && isset($_POST['mdp'])){
+                    mdpegal($_POST['mdp'],$_POST['mdpv']);
+                    }
+                    ?> 
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <strong>Etat civil</strong>
+                </td>
+                <td>
+                    
+                </td>
+                <td>
+                    
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Nom * : 
+                </td>
+                <td>
+                    <input type="text" name="nom" required <?php if(isset($_POST['nom'])){ echo 'value='; echo $_POST['nom'];} ?>>
+                </td>
+                <td>
+                    
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Prenom * : 
+                </td>
+                <td>
+                    <input type="text" name="prenom" required <?php if(isset($_POST['prenom'])){ echo 'value='; echo $_POST['prenom'];} ?>>
+                </td>
+                <td>
+                    
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Sexe * : 
+                </td>
+                <td>
+                    <input type="radio" name="sexe" value="masculin" required <?php if(isset($_POST['sexe'])){if($_POST['sexe'] == 'masculin'){ echo 'checked';}} ?> > Masculin
+                    <input type="radio" name="sexe" value="feminin" required <?php if(isset($_POST['sexe'])){if($_POST['sexe'] == 'feminin'){ echo 'checked';}} ?> > Féminin 
+                </td>
+                <td>
+                    
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Date de naissance * : 
+                </td>
+                <td>
+                    <input type="date" name="naissance" required <?php if(isset($_POST['naissance'])){ echo 'value='; echo $_POST['naissance'];} ?> >
+                </td>
+                <td>
+                    
+                </td>
+            </tr>
+           
+        </table>
+        <br />
+        <input type="checkbox" name="conditions" value="conditions" id="CGU" required >Je confirme avoir lu et accepter les <a href="cgu.php">conditions générales d'utilisation</a>
+        <br />
+        <br />
+        
+        <input type="submit" name="valider" value="Valider">
+        </form>   
+        
+
+
+        
+        <?php
+
+        if(isset($_POST['valider']) && isset($_POST['pseudo']) && isset($_POST['email']) && isset($_POST['mdp']) && isset($_POST['mdpv'])){
+            if(formulairebon($_POST['pseudo'],$_POST['email'],$_POST['mdp'],$_POST['mdpv'])){
+                requeteinscription($_POST['pseudo'],$_POST['email'],$_POST['mdp'],$_POST['nom'],$_POST['prenom'],$_POST['sexe'],$_POST['naissance']);
+                
+		include '../structure/connexion_bdd.php';
+		$reponse = $bdd->query("SELECT idClient,Pseudo,NomUtilisateur,PrenomUtilisateur,Pwd FROM client WHERE Pseudo='$_POST[pseudo]'");
+		$donnees = $reponse->fetch();
+		$_SESSION['id'] = $donnees['idClient'];
+		$_SESSION['pseudo'] = $donnees['Pseudo'];
+		$_SESSION['nom'] = $donnees['NomUtilisateur'];
+		$_SESSION['prenom'] = $donnees['PrenomUtilisateur'];
+                print("<script type=\"text/javascript\">setTimeout('location=(\"compte.php\")' ,0);</script>");
+		$reponse->closecursor();
+                
+            }    
+        }
+
+    ?>
+        
+        
+    </article>
+
+
+    
+ 
+    <?php include ('../structure/footer.php');?> 
+</div>
+
+</body>
+</html>

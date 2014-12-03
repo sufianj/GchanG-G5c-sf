@@ -1,0 +1,90 @@
+<?php 
+    session_start();
+    $page='recherche';
+?>
+
+
+<!DOCTYPE HTML>
+<html>
+	<head>
+                <meta charset="utf-8" />
+                <link rel="stylesheet" href="stylepages.css" />
+                <link rel="stylesheet" href="../structure/stylestructure.css" /> 
+                <link rel="icon" type="images/png" href="../../images/favicone.png">
+                <title>GchanG</title>
+	</head>
+        
+        
+<body>
+    
+<div id="page">
+    
+    <?php include ('../structure/header.php');?>
+    
+    <?php include ('../structure/nav.php');?>
+    
+    <?php include ('../structure/aside.php');?>
+    
+    <!--corps-->
+    <article>
+
+        <?php 
+	
+	include ("../structure/resultat_recherche.php"); 
+        include ("../pages/recherche_text.php");
+        ?>
+
+    <script>
+        var i=0;
+        while(i<5)
+            {
+            $.get("recherche_text.php",{ sid: i},
+       function(data){
+        var jsObject = eval('('+data+')');
+        if(jsObject){
+            //todo: check if file exists or use the none.jpg
+            $text='<div id="recherche"><table border="0"><tr><td><img src="../../images/objets/'+jsObject['idObjet']+'.jpg" alt="objet 1" class="objet 1" /></td><td width="45%"><div id="echanges_title">Titre:'+jsObject['TitreObjet']+'</div><p>'+jsObject['DescriptionObjet']+'</p></td><td width="45%"style="border-left: 1px dashed blue"><div id="echanges_title"> Date de retour</div></td></tr></table></div>';    
+            $("button").before($text,
+            '<br />'
+            );  
+        }else{
+            //alert("no more data");
+        }
+    });
+             i++;   
+            }
+	    
+        function pmss(){
+	j=0;
+	while(j<5){
+       $.get("recherche_text.php",{ sid: i},
+       function(data){
+        var jsObject = eval('('+data+')');
+        if(jsObject){
+            
+            $text='<div id="echanges"><table border="0"><tr><td><img src="../../images/objets/'+jsObject['idObjet']+'.jpg" alt="objet 1" class="objet 1" /></td><td width="45%"><div id="echanges_title">Titre:'+jsObject['TitreObjet']+'</div><p>'+jsObject['DescriptionObjet']+'</p></td><td width="45%"style="border-left: 1px dashed blue"><div id="echanges_title"> Date de retour</div></td></tr></table></div>';    
+            $("button").before($text,
+            '<br />'
+            ); 
+        }else{
+            //alert("no more data");
+        }
+    });
+    i++;
+    j++;
+    }
+ }
+   
+        
+    </script>
+<button onclick="pmss();">plus d'objets</button>
+    </article>
+
+
+    
+ 
+    <?php include ('../structure/footer.php');?> 
+</div>
+
+</body>
+</html>

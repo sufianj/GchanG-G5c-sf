@@ -1,0 +1,133 @@
+<script type='text/javascript'>
+function ShowImage(page, tag)
+{
+    var i = 1;
+    var el;
+    while (el = document.getElementById(tag + i)) {
+        if (i == page)
+            el.style.display = 'block';
+        else
+            el.style.display = 'none';
+        i++;
+    }
+}
+</script>   
+
+<table id="tableau_categorie_accueil">
+    <tr>
+        <td id="tableau_caroussel_bouton">
+            <form method="post" action="traitement.php">
+
+<!-- j'ai changè les valeurs des input pour js -->
+                <input type="radio" name="categorie" value="1" id="recent"  onchange="ShowImage(parseInt(this.value), 'categorie');" checked=""/> <label for="recent">Ajout récents</label><br/>
+                <input type="radio" name="categorie" value="2" id="consulte"  onchange="ShowImage(parseInt(this.value), 'categorie');"/> <label for="consulte">Les plus consultés</label><br/>
+                <input type="radio" name="categorie" value="3" id="bricolage"  onchange="ShowImage(parseInt(this.value), 'categorie');"/> <label for="bricolage">Bricolage</label><br/>
+                <input type="radio" name="categorie" value="4" id="cuisine"  onchange="ShowImage(parseInt(this.value), 'categorie');"/> <label for="cuisine">Cuisine</label>
+
+            </form>
+        </td>
+        <td>
+            <!-- On va telecharger les images par php plus tard-->
+            <div style="display:block" id="categorie1">
+              <table><tr>
+               <td class="tableau_caroussel">
+                   <h2>Objet 1</h2>
+                   <img src="../../images/objet1.png" alt="objet 1" class="objet 1" /><br/>	
+                   Une magnifique armoire en bois massif
+               </td>
+               <td class="tableau_caroussel">
+                   <h2>Objet 2</h2>
+                   <img src="../../images/objet2.png" alt="objet 2" class="objet 2" /><br/>
+                   Une magnifique horloge teintée d'argent						
+               </td>
+               <td class="tableau_caroussel">
+                   <h2>Objet 3</h2>
+                   <img src="../../images/objet3.png" alt="objet 3" class="objet 3" /><br/>
+                   Un tout petit sèche cheveux						
+               </td>
+               <td class="tableau_caroussel">
+                   <h2>Objet 4</h2>
+                   <img src="../../images/objet4.png" alt="objet 4" class="objet 4" /><br/>
+                   Je sais pas trop ce que c'est...
+               </td>
+               </tr></table>
+             </div>
+    
+             <div style="display:none" id="categorie2">
+                <table><tr>
+               <td class="tableau_caroussel">
+                   <h2>Objet 1</h2>
+                   <img src="../../images/objet2.png" alt="objet 1" class="objet 1" /><br/>	
+                   Une magnifique armoire en bois massif
+               </td>
+               <td class="tableau_caroussel">
+                   <h2>Objet 2</h2>
+                   <img src="../../images/objet3.png" alt="objet 2" class="objet 2" /><br/>
+                   Une magnifique horloge teintée d'argent						
+               </td>
+               <td class="tableau_caroussel">
+                   <h2>Objet 3</h2>
+                   <img src="../../images/objet4.png" alt="objet 3" class="objet 3" /><br/>
+                   Un tout petit sèche cheveux						
+               </td>
+               <td class="tableau_caroussel">
+                   <h2>Objet 4</h2>
+                   <img src="../../images/objet1.png" alt="objet 4" class="objet 4" /><br/>
+                   Je sais pas trop ce que c'est...
+               </td>
+               </tr></table>
+             </div>
+    
+             <div style="display:none" id="categorie3">
+                <table><tr>
+               <td class="tableau_caroussel">
+                   <h2>Objet 1</h2>
+                   <img src="../../images/objet3.png" alt="objet 1" class="objet 1" /><br/>	
+                   Une magnifique armoire en bois massif
+               </td>
+               <td class="tableau_caroussel">
+                   <h2>Objet 2</h2>
+                   <img src="../../images/objet4.png" alt="objet 2" class="objet 2" /><br/>
+                   Une magnifique horloge teintée d'argent						
+               </td>
+               <td class="tableau_caroussel">
+                   <h2>Objet 3</h2>
+                   <img src="../../images/objet1.png" alt="objet 3" class="objet 3" /><br/>
+                   Un tout petit sèche cheveux						
+               </td>
+               <td class="tableau_caroussel">
+                   <h2>Objet 4</h2>
+                   <img src="../../images/objet2.png" alt="objet 4" class="objet 4" /><br/>
+                   Je sais pas trop ce que c'est...
+               </td>
+               </tr></table>
+             </div>
+    
+             <div style="display:none" id="categorie4">
+                <table><tr>
+               <td class="tableau_caroussel">
+                   <h2>Objet 1</h2>
+                   <img src="../../images/objet4.png" alt="objet 1" class="objet 1" /><br/>	
+                   Une magnifique armoire en bois massif
+               </td>
+               <td class="tableau_caroussel">
+                   <h2>Objet 2</h2>
+                   <img src="../../images/objet1.png" alt="objet 2" class="objet 2" /><br/>
+                   Une magnifique horloge teintée d'argent						
+               </td>
+               <td class="tableau_caroussel">
+                   <h2>Objet 3</h2>
+                   <img src="../../images/objet2.png" alt="objet 3" class="objet 3" /><br/>
+                   Un tout petit sèche cheveux						
+               </td>
+               <td class="tableau_caroussel">
+                   <h2>Objet 4</h2>
+                   <img src="../../images/objet3.png" alt="objet 4" class="objet 4" /><br/>
+                   Je sais pas trop ce que c'est...
+               </td>
+               </tr></table>
+             </div>
+        </td>
+    </tr>
+
+</table>

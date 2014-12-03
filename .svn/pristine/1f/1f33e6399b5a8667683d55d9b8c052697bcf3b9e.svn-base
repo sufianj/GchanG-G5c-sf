@@ -1,0 +1,99 @@
+-- phpMyAdmin SQL Dump
+-- version 4.0.4
+-- http://www.phpmyadmin.net
+--
+-- Client: localhost
+-- Généré le: Lun 06 Janvier 2014 à 08:11
+-- Version du serveur: 5.6.12-log
+-- Version de PHP: 5.4.12
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+
+--
+-- Base de données: `gchangtest`
+--
+CREATE DATABASE IF NOT EXISTS `gchangtest` DEFAULT CHARACTER SET utf8 COLLATE utf8_bin;
+USE `gchangtest`;
+
+--
+-- Contenu de la table `admin`
+--
+
+INSERT INTO `admin` (`idAmin`, `Nom`, `Contenu`) VALUES
+(1, 'cgu', '   bonjour test  '),
+(2, 'aide', 'aide'),
+(3, 'qsn', 'Qui sommes-nous?'),
+(4, 'contact', 'Service clientÃ¨le       ');
+
+--
+-- Contenu de la table `categorie`
+--
+
+INSERT INTO `categorie` (`idCategorie`, `NomCategorie`) VALUES
+(1, 'Transport'),
+(2, 'Hi Tech'),
+(3, 'Maison'),
+(4, 'test');
+
+--
+-- Contenu de la table `categorieforum`
+--
+
+INSERT INTO `categorieforum` (`idCategorieForum`, `Titre`) VALUES
+(1, 'GÃ©nÃ©ral');
+
+--
+-- Contenu de la table `client`
+--
+
+INSERT INTO `client` (`idClient`, `Pseudo`, `Pwd`, `AdresseMail`, `NomUtilisateur`, `PrenomUtilisateur`, `Sexe`, `DateNaissance`, `DateInscription`, `NumRue`, `Rue`, `CodePostal`, `Ville`, `Pays`, `Lat`, `Lon`, `adresse`) VALUES
+(1, 'Admin', 'Admin', 'admin@admin', 'Admin', 'Admin', NULL, NULL, '2013-12-10 15:38:20', NULL, NULL, NULL, NULL, NULL, '0.000000000000000000000000000000', '0.000000000000000000000000000000', ''),
+(2, 'Olive', '12az&', 'olive@olive', 'olivier', 'Mathieu', 'masculin', '2013-12-12', '2013-12-19 09:46:48', NULL, NULL, NULL, NULL, NULL, '49.055609000000000000000000000000', '-0.512191300000040400000000000000', 'mesnil'),
+(3, 'Xav', '12az&', 'xav@xav', 'Xavier', 'JEANNENEY', 'masculin', '2013-12-12', '2013-12-19 09:53:17', NULL, NULL, NULL, NULL, NULL, '48.849766000000000000000000000000', '2.132504000000040000000000000000', 'La celles saint cloud'),
+(4, 'Marie', '12az&', 'marie@marie', 'Marie', 'Marie', 'feminin', '2013-12-10', '2013-12-19 09:55:34', NULL, NULL, NULL, NULL, NULL, '48.390394000000000000000000000000', '-4.486076000000025500000000000000', 'Brest'),
+(5, 'Camille', '12az&', 'cam@cam', 'Camille', 'Camille', 'feminin', '2013-12-17', '2013-12-19 09:56:14', NULL, NULL, NULL, NULL, NULL, '43.696036000000000000000000000000', '7.265591999999970000000000000000', 'nice');
+
+--
+-- Contenu de la table `objet`
+--
+
+INSERT INTO `objet` (`idObjet`, `TitreObjet`, `idUtilisateur`, `TypeOperation`, `DescriptionObjet`, `idCategorie`, `idGrosseCat`, `PseudoProprio`) VALUES
+(4, '2 cv', 5, 'Pret', 'petite voiture', 3, 1, 'Camille'),
+(5, 'Cuisiniere', 5, 'Location', 'Tres bon Ã©tat', 15, 3, 'Camille'),
+(6, 'iphone', 5, 'Troc', 'un peu abimÃ©', 5, 2, 'Camille'),
+(7, 'petit velo', 5, 'Don', 'le velo de mon enfance', 11, 1, 'Camille'),
+(9, 'Bus', 4, 'Location', 'bus typique de londres', 2, 1, 'Marie'),
+(10, 'vieux portable', 4, 'Troc', 'nokia assez ancien', 5, 2, 'Marie'),
+(11, 'baignoire', 4, 'Don', 'petite baignoire sympathique', 6, 3, 'Marie'),
+(12, 'set de table', 4, 'Pret', 'set de table trÃ¨s pratique', 15, 3, 'Marie'),
+(13, 'Ordinateur ', 2, 'Location', 'bon ordi en bon etat', 9, 2, 'Olive'),
+(14, 'enceintes', 3, 'Location', 'bonne enceintes audio utiles pour des soirÃ©es', 4, 2, 'Xav'),
+(15, 'lit', 2, 'Troc', 'tres beau lit a baldaquins', 6, 3, 'Olive'),
+(16, 'mobylette', 3, 'Troc', 'mobylette pratique et pas besoin de permis', 2, 1, 'Xav'),
+(17, 'samsung S2', 2, 'Don', 'portable en bon Ã©tat, je le donne', 5, 2, 'Olive'),
+(18, 'four', 2, 'Pret', 'four tres puiisant', 15, 3, 'Olive'),
+(19, 'porsche', 3, 'Pret', 'voiture assez sympa pour partir en vacance', 3, 1, 'Xav'),
+(21, 'Table', 3, 'Don', 'Ensemble de table et chaises pour une salle Ã  manger', 13, 3, 'Xav');
+
+--
+-- Contenu de la table `subcategorie`
+--
+
+INSERT INTO `subcategorie` (`idSubCategorie`, `NomSubCategorie`, `CategorieAssocie`, `idCategorieAssocie`) VALUES
+(1, 'Voitures', 'Transport', 1),
+(2, 'Telephones', 'Hi Tech', 2),
+(4, 'Ordinateurs', 'Hi Tech', 2),
+(5, 'Velos', 'Transport', 1),
+(6, 'Salle a manger', 'Maison', 3),
+(7, 'Cuisine', 'Maison', 3);
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

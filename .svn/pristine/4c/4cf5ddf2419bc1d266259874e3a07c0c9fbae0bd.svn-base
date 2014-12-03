@@ -1,0 +1,56 @@
+.boutoncategories{
+    background-repeat:no-repeat;
+    background-position: top;
+    height: 40px;
+    cursor: pointer;
+    width: 90px;
+    border: none;
+    background-color: white;
+    font-size: 18px;
+}
+
+.boutoncategories:hover{
+    background-color: #cccccc
+}
+.titreforum{
+    margin-left: 50px;
+    font-size: 20px;
+}
+#topics{
+    border-collapse: collapse;
+    
+}
+thead{
+    text-align: center;
+    font-weight: bold;
+    background-color:#666666
+}
+#topics td{
+    /*border: solid black 1px;*/
+    padding: 3px;  
+
+}
+.couleurtr1{
+    background-color: #999999;
+}
+.couleurtr2{
+    background-color: #cccccc
+}
+.goforum
+{
+    background-repeat:no-repeat;
+    background-position: top;
+    height: 20px;
+    cursor: pointer;
+    font-size:0px;
+    width: 30px;
+    border: none;
+    background-image:url(../../images/demigo.png);
+    background-color: transparent;
+}
+.nouvpost{
+    background-color: #6666cc;
+}
+.date{
+    min-width: 80px;
+}
